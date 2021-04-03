@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} All Pokemons{% endblock %}
+
+{% block content %}
+    {% for pokemon in pokemons %}
+        <p>{{pokemon.name}}</p>
+        <p>{{pokemon.image}}</p>
+        <ul>
+        {% for type in pokemon.types %}
+            <li>{{type}}</li>
+        {% endfor %}
+        </ul>
+        <ul>
+        {% for attack in pokemon.attacks %}
+            <li>{{attack}}</li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

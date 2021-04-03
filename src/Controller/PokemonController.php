@@ -114,6 +114,10 @@ class PokemonController extends AbstractController
     }
 
 
+    public function list(){
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
+        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons]);
+    }
 
 
 
