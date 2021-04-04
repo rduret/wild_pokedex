@@ -21,6 +21,26 @@ class PokemonController extends AbstractController
         $this->attackManager = new AttackManager();
     }
 
+    /**
+     * List all pokemons
+     */
+    public function list(){
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
+        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons]);
+    }
+
+    /**
+     * show pokemon details
+     */
+    public function details(int $id): string
+    {
+        $pokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
+        return $this->twig->render('Pokemon/details.html.twig', ['pokemon' => $pokemon]);
+    }
+
+    /**
+     * Add a pokemon
+     */
     public function add()
     {
         $types = $this->typeManager->selectAll();
@@ -114,37 +134,9 @@ class PokemonController extends AbstractController
     }
 
 
-    public function list(){
-        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons]);
-    }
 
 
 
-
-
-    /**
-     * List items
-     */
-/*     public function index(): string
-    {
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAll('title');
-
-        return $this->twig->render('Item/index.html.twig', ['items' => $items]);
-    } */
-
-
-    /**
-     * Show informations for a specific item
-     */
-/*     public function show(int $id): string
-    {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
-
-        return $this->twig->render('Item/show.html.twig', ['item' => $item]);
-    } */
 
 
     /**
@@ -169,27 +161,6 @@ class PokemonController extends AbstractController
         return $this->twig->render('Item/edit.html.twig', [
             'item' => $item,
         ]);
-    } */
-
-
-    /**
-     * Add a new item
-     */
-/*     public function add(): string
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
-            $item = array_map('trim', $_POST);
-
-            // TODO validations (length, format...)
-
-            // if validation is ok, insert and redirection
-            $itemManager = new ItemManager();
-            $id = $itemManager->insert($item);
-            header('Location:/item/show/' . $id);
-        }
-
-        return $this->twig->render('Item/add.html.twig');
     } */
 
 
