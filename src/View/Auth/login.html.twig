@@ -1,0 +1,18 @@
+{% extends "layout.html.twig" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <form method="post" action="" accept-charset="UTF-8">
+  
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username">
+    
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password">
+    
+        <input type="submit" value="Login">
+    
+        {% for error in errorMessages %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </form>
+{% endblock %}
