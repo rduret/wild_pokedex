@@ -3,6 +3,7 @@
 {% block title %} All Pokemons{% endblock %}
 
 {% block content %}
+    {{validationMessage}}
     {% for pokemon in pokemons %}
         <p>{{pokemon.name}}</p>
         <p>{{pokemon.image}}</p>

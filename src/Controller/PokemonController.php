@@ -26,11 +26,19 @@ class PokemonController extends AbstractController
      */
     public function list()
     {
-        // si $_SESSION['dlt_pok_msg'] existe, utiliser isset pour vérifier son existence
-        // $message = $_SESSION['dlt_pok_msg']
-        // detruire $_SESSION['dlt_pok_msg']
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons]);
+        //on veut créer une variable vide lorsque la suppression n'a pas été effectuée
+        if (isset($_SESSION['dlt_pok_msg'])) {
+            $validationMessage = $_SESSION['dlt_pok_msg'];
+            // define a validationMessage var to keep the value of $_SESSION['dlt_pok_msg']
+            unset($_SESSION['dlt_pok_msg']);
+        } else {
+            $validationMessage = '';
+            // is empty if you are not coming from the delete function
+        }
+
+        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons, 'validationMessage' => $validationMessage]);
+        // display the $validationMessage var in render if it exists
     }
 
     /**
@@ -141,63 +149,8 @@ class PokemonController extends AbstractController
         $rowCount = $this->pokemonManager->deletePokemonFromList($id);
         $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de la liste!' : 'erreur!';
         // créer une variable de session $_SESSION['dlt_pok_msg']
+        $_SESSION['dlt_pok_msg'] = $validationMessage;
         header('Location: /Pokemon/list');
         //
     }
-    
-
-
-
-
-    /**
-     * List items
-     */
-/*     public function index(): string
-    {
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAll('title');
-
-        return $this->twig->render('Item/index.html.twig', ['items' => $items]);
-    } */
-
-
-
-
-
-    /**
-     * Edit a specific item
-     */
-/*     public function edit(int $id): string
-    {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
-            $item = array_map('trim', $_POST);
-
-            // TODO validations (length, format...)
-
-            // if validation is ok, update and redirection
-            $itemManager->update($item);
-            header('Location: /item/show/' . $id);
-        }
-
-        return $this->twig->render('Item/edit.html.twig', [
-            'item' => $item,
-        ]);
-    } */
-
-
-    /**
-     * Delete a specific item
-     */
-    /*     public function delete(int $id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $itemManager = new ItemManager();
-            $itemManager->delete($id);
-            header('Location:/item/index');
-        }
-    }  */
 }
