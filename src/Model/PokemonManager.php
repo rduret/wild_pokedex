@@ -22,63 +22,103 @@ class PokemonManager extends AbstractManager
         //Add pokemon and type into pokemon_type table
         for ($i = 1; $i <= 2; $i++) {
             if (isset($pokemonValues['type' . $i]) && trim($pokemonValues['type' . $i]) !== "") {
-                $statement = $this->pdo->prepare("INSERT INTO Pokemon_Type (`pokemon_id`, `type_id`) VALUES (:pokemon_id, :type_id)");
-                $statement->bindValue('pokemon_id', $idPokemon, \PDO::PARAM_INT);
-                $statement->bindValue('type_id', $pokemonValues['type' . $i], \PDO::PARAM_INT);
-                $statement->execute();
+                $this->addTypeToPokemon($pokemonValues['type' . $i], $idPokemon);
             }
         }
 
         //Add pokemon and attack into pokemon_attack table
         for ($i = 1; $i <= 4; $i++) {
             if (isset($pokemonValues['attack' . $i]) && trim($pokemonValues['attack' . $i]) !== "") {
-                $statement = $this->pdo->prepare("INSERT INTO Pokemon_Attack (`pokemon_id`, `attack_id`) VALUES (:pokemon_id, :attack_id)");
-                $statement->bindValue('pokemon_id', $idPokemon, \PDO::PARAM_INT);
-                $statement->bindValue('attack_id', $pokemonValues['attack' . $i], \PDO::PARAM_INT);
-                $statement->execute();
+                $this->addAttackToPokemon($pokemonValues['attack' . $i], $idPokemon);
             }
         }
         return $idPokemon;
     }
+    /**
+     * Select pokemon's types by id in database
+     */
+    public function selectPokemonTypesById($id)
+    {
+        $query = 'SELECT Type.name 
+        FROM Type JOIN Pokemon_Type ON Type.id = type_id
+        JOIN Pokemon ON pokemon_id = Pokemon.id 
+        WHERE pokemon_id = ' . $id;
+        return $this->pdo->query($query)->fetchAll();
+    }
 
+    /**
+     * Select pokemon's attacks by id in database
+     */
+    public function selectPokemonAttacksById($id)
+    {
+        $query = 'SELECT Attack.name 
+        FROM Attack JOIN Pokemon_Attack ON Attack.id = attack_id
+        JOIN Pokemon ON pokemon_id = Pokemon.id 
+        WHERE pokemon_id = ' . $id;
+        return $this->pdo->query($query)->fetchAll();
+    }
+
+    /**
+     * Select on pokemon by id with his attacks and types
+     */
+    public function selectOneByIdWithAttackTypes($id)
+    {
+        //We get the pokemon, attacks and types
+        $pokemon = $this->selectOneById($id);
+        $pokemonAttacks = $this->selectPokemonAttacksById($id);
+        $pokemonTypes = $this->selectPokemonTypesById($id);
+
+        //we had every types into the pokemon types array
+        foreach ($pokemonTypes as $type) {
+            $pokemon['types'][] = $type['name'];
+        }
+
+        //we had every attacks into the pokemon attacks array
+        foreach ($pokemonAttacks as $attack) {
+            $pokemon['attacks'][] = $attack['name'];
+        }
+
+        return $pokemon;
+    }
+
+    /**
+     * Select all pokemons with their attacks and types
+     */
     public function selectAllWithAttackTypes()
     {
         $pokemons = [];
 
-        //We get all pokemons and stock them inside $pokemons with their id as key
+        //Get all pokemon in Pokemon table
         $results = $this->selectAll();
+        //For each pokemon id, we get pokemon with attacks and types and store it into $pokemons
         foreach ($results as $result) {
-            $pokemons[$result['id']] = ['name' => $result['name'], 'image' => $result['image']];
+            $pokemons[] = $this->selectOneByIdWithAttackTypes($result['id']);
         }
 
-        //For each pokemon we get their types id and types name
-        foreach ($pokemons as $id => $pokemon) {
-            //Get the types ID
-            $query = 'SELECT type_id FROM Pokemon_Type WHERE pokemon_id = ' . $id;
-            $types = $this->pdo->query($query)->fetchAll();
-            $typesName = [];
-            //For each type id we get its type name and add it to the pokemon
-            foreach ($types as $type) {
-                $query = 'SELECT name FROM Type WHERE id = ' . $type['type_id'];
-                $typesName = $this->pdo->query($query)->fetch();
-
-                //Add types to current pokemon
-                $pokemons[$id]['types'][] = $typesName['name'];
-            }
-        }
-
-        //Same for attacks
-        foreach ($pokemons as $id => $pokemon) {
-            $query = 'SELECT attack_id FROM Pokemon_Attack WHERE pokemon_id = ' . $id;
-            $attacks = $this->pdo->query($query)->fetchAll();
-            $attacksName = [];
-            foreach ($attacks as $attack) {
-                $query = 'SELECT name FROM Attack WHERE id = ' . $attack['attack_id'];
-                $attacksName = $this->pdo->query($query)->fetch();
-                $pokemons[$id]['attacks'][] = $attacksName['name'];
-            }
-        }
         return $pokemons;
+    }
+
+    /**
+     * Add type to pokemon with IDs
+     */
+    public function addTypeToPokemon($typeId, $pokemonId)
+    {
+        $statement = $this->pdo->prepare("INSERT INTO Pokemon_Type (`pokemon_id`, `type_id`) VALUES (:pokemon_id, :type_id)");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    
+    /**
+     * Add type to pokemon with IDs
+     */
+    public function addAttackToPokemon($attackId, $pokemonId)
+    {
+        $statement = $this->pdo->prepare("INSERT INTO Pokemon_Attack (`pokemon_id`, `attack_id`) VALUES (:pokemon_id, :attack_id)");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
+        $statement->execute();
     }
     /*     Delete Pokemon from list */
     public function deletePokemonFromList(int $id)
