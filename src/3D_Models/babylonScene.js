@@ -11,19 +11,25 @@ var createScene = function () {
     var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 3,  Math.PI / 2.7, 3, new BABYLON.Vector3(0,0.5,0), scene);
     camera.attachControl(canvas, true);
 
-    //function to import model into scene
-    function loadMeshes(){
-        BABYLON.SceneLoader.ImportMeshAsync("", "/", "eevee.glb")
-        .then((result) => {
-            var meshes = new Array();
-            meshes = result.meshes;
-            //Add shadow caster to each mesh within model
-            meshes.forEach(element => shadowGenerator.addShadowCaster(element,true));
-            console.log(meshes);
-            })
-    };
+    /**
+     * ASYNC/AWAIT Function to load a model into the scene
+     * @param {*} meshNames | can be "" for any
+     * @param {*} rootUrl 
+     * @param {*} fileName 
+     */
+    async function loadMeshes(meshNames, rootUrl, fileName){
+        var model = await BABYLON.SceneLoader.ImportMeshAsync(meshNames, rootUrl, fileName);
+        //Add shadow caster to each mesh within model
+        model.meshes.forEach(element => shadowGenerator.addShadowCaster(element,true));
+        
+        //Get the model's bounding size to adapt camera view
+        var modelSize = model.meshes[1].getBoundingInfo().boundingBox.extendSize;
 
-    loadMeshes();
+
+        console.log(modelSize);
+    };
+    
+    loadMeshes("", "/", "psyduck.glb");
 
     //Setup environment
     var env = scene.createDefaultEnvironment({ 
