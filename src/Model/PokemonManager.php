@@ -41,25 +41,24 @@ class PokemonManager extends AbstractManager
         return $idPokemon;
     }
 
-    public function selectAllWithAttackTypes(){
-
-        $pokemons = [];                     
+    public function selectAllWithAttackTypes()
+    {
+        $pokemons = [];
 
         //We get all pokemons and stock them inside $pokemons with their id as key
         $results = $this->selectAll();
-        foreach($results as $result){
+        foreach ($results as $result) {
             $pokemons[$result['id']] = ['name' => $result['name'], 'image' => $result['image']];
         }
 
         //For each pokemon we get their types id and types name
-        foreach($pokemons as $id => $pokemon){
+        foreach ($pokemons as $id => $pokemon) {
             //Get the types ID
             $query = 'SELECT type_id FROM Pokemon_Type WHERE pokemon_id = ' . $id;
             $types = $this->pdo->query($query)->fetchAll();
             $typesName = [];
-            
             //For each type id we get its type name and add it to the pokemon
-            foreach($types as $type){
+            foreach ($types as $type) {
                 $query = 'SELECT name FROM Type WHERE id = ' . $type['type_id'];
                 $typesName = $this->pdo->query($query)->fetch();
 
@@ -69,20 +68,28 @@ class PokemonManager extends AbstractManager
         }
 
         //Same for attacks
-        foreach($pokemons as $id => $pokemon){
+        foreach ($pokemons as $id => $pokemon) {
             $query = 'SELECT attack_id FROM Pokemon_Attack WHERE pokemon_id = ' . $id;
             $attacks = $this->pdo->query($query)->fetchAll();
             $attacksName = [];
-            
-            foreach($attacks as $attack){
+            foreach ($attacks as $attack) {
                 $query = 'SELECT name FROM Attack WHERE id = ' . $attack['attack_id'];
                 $attacksName = $this->pdo->query($query)->fetch();
-                
                 $pokemons[$id]['attacks'][] = $attacksName['name'];
             }
         }
-
         return $pokemons;
+    }
+    /*     Delete Pokemon from list */
+    public function deletePokemonFromList(int $id)
+    {
+        $query = 'DELETE FROM Pokemon WHERE id = :id';
+        // :id to bind with bind value
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        // returns lines which have been affected by an INSERT, UPDATE or DELETE
+        return $statement->rowCount();
     }
 }
 
