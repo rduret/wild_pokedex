@@ -34,11 +34,11 @@ class PokemonManager extends AbstractManager
         }
         return $idPokemon;
     }
-
     /**
      * Select pokemon's types by id in database
      */
-    public function selectPokemonTypesById($id){
+    public function selectPokemonTypesById($id)
+    {
         $query = 'SELECT Type.name 
         FROM Type JOIN Pokemon_Type ON Type.id = type_id
         JOIN Pokemon ON pokemon_id = Pokemon.id 
@@ -49,7 +49,8 @@ class PokemonManager extends AbstractManager
     /**
      * Select pokemon's attacks by id in database
      */
-    public function selectPokemonAttacksById($id){
+    public function selectPokemonAttacksById($id)
+    {
         $query = 'SELECT Attack.name 
         FROM Attack JOIN Pokemon_Attack ON Attack.id = attack_id
         JOIN Pokemon ON pokemon_id = Pokemon.id 
@@ -60,19 +61,20 @@ class PokemonManager extends AbstractManager
     /**
      * Select on pokemon by id with his attacks and types
      */
-    public function selectOneByIdWithAttackTypes($id){
+    public function selectOneByIdWithAttackTypes($id)
+    {
         //We get the pokemon, attacks and types
         $pokemon = $this->selectOneById($id);
         $pokemonAttacks = $this->selectPokemonAttacksById($id);
         $pokemonTypes = $this->selectPokemonTypesById($id);
 
         //we had every types into the pokemon types array
-        foreach($pokemonTypes as $type){
+        foreach ($pokemonTypes as $type) {
             $pokemon['types'][] = $type['name'];
         }
 
         //we had every attacks into the pokemon attacks array
-        foreach($pokemonAttacks as $attack){
+        foreach ($pokemonAttacks as $attack) {
             $pokemon['attacks'][] = $attack['name'];
         }
 
@@ -82,15 +84,14 @@ class PokemonManager extends AbstractManager
     /**
      * Select all pokemons with their attacks and types
      */
-    public function selectAllWithAttackTypes(){
-
-        $pokemons = [];                     
+    public function selectAllWithAttackTypes()
+    {
+        $pokemons = [];
 
         //Get all pokemon in Pokemon table
         $results = $this->selectAll();
-        
         //For each pokemon id, we get pokemon with attacks and types and store it into $pokemons
-        foreach($results as $result){
+        foreach ($results as $result) {
             $pokemons[] = $this->selectOneByIdWithAttackTypes($result['id']);
         }
 
@@ -100,22 +101,35 @@ class PokemonManager extends AbstractManager
     /**
      * Add type to pokemon with IDs
      */
-    public function addTypeToPokemon($typeId, $pokemonId){
-            $statement = $this->pdo->prepare("INSERT INTO Pokemon_Type (`pokemon_id`, `type_id`) VALUES (:pokemon_id, :type_id)");
-            $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
-            $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
-            $statement->execute();
+    public function addTypeToPokemon($typeId, $pokemonId)
+    {
+        $statement = $this->pdo->prepare("INSERT INTO Pokemon_Type (`pokemon_id`, `type_id`) VALUES (:pokemon_id, :type_id)");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->execute();
     }
 
     
     /**
      * Add type to pokemon with IDs
      */
-    public function addAttackToPokemon($attackId, $pokemonId){
+    public function addAttackToPokemon($attackId, $pokemonId)
+    {
         $statement = $this->pdo->prepare("INSERT INTO Pokemon_Attack (`pokemon_id`, `attack_id`) VALUES (:pokemon_id, :attack_id)");
         $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
         $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
         $statement->execute();
+    }
+    /*     Delete Pokemon from list */
+    public function deletePokemonFromList(int $id)
+    {
+        $query = 'DELETE FROM Pokemon WHERE id = :id';
+        // :id to bind with bind value
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        // returns lines which have been affected by an INSERT, UPDATE or DELETE
+        return $statement->rowCount();
     }
 }
 

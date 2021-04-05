@@ -24,9 +24,21 @@ class PokemonController extends AbstractController
     /**
      * List all pokemons
      */
-    public function list(){
+    public function list()
+    {
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons]);
+        //on veut créer une variable vide lorsque la suppression n'a pas été effectuée
+        if (isset($_SESSION['dlt_pok_msg'])) {
+            $validationMessage = $_SESSION['dlt_pok_msg'];
+            // define a validationMessage var to keep the value of $_SESSION['dlt_pok_msg']
+            unset($_SESSION['dlt_pok_msg']);
+        } else {
+            $validationMessage = '';
+            // is empty if you are not coming from the delete function
+        }
+
+        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons, 'validationMessage' => $validationMessage]);
+        // display the $validationMessage var in render if it exists
     }
 
     /**
@@ -122,9 +134,8 @@ class PokemonController extends AbstractController
             //if errors
             if (!empty($errors)) {
                 return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks, 'errors' => $errors]);
-            }
-            // else if validation is ok, upload file then insert and redirect
-            else {
+            } else {
+                // else if validation is ok, upload file then insert and redirect
                 $id = $this->pokemonManager->insert($pokemonValues);
                 header('Location:/pokemon/details/' . $id);
             }
@@ -132,47 +143,14 @@ class PokemonController extends AbstractController
         //else we show the form
         return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks]);
     }
-
-
-
-
-
-
-
-    /**
-     * Edit a specific item
-     */
-/*     public function edit(int $id): string
+    public function delete(int $id)
     {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
-            $item = array_map('trim', $_POST);
-
-            // TODO validations (length, format...)
-
-            // if validation is ok, update and redirection
-            $itemManager->update($item);
-            header('Location: /item/show/' . $id);
-        }
-
-        return $this->twig->render('Item/edit.html.twig', [
-            'item' => $item,
-        ]);
-    } */
-
-
-    /**
-     * Delete a specific item
-     */
-    /*     public function delete(int $id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $itemManager = new ItemManager();
-            $itemManager->delete($id);
-            header('Location:/item/index');
-        }
-    }  */
+        // Getting the rowCount value which is returned at the end of deletePokemonFromList function
+        $rowCount = $this->pokemonManager->deletePokemonFromList($id);
+        $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de la liste!' : 'erreur!';
+        // créer une variable de session $_SESSION['dlt_pok_msg']
+        $_SESSION['dlt_pok_msg'] = $validationMessage;
+        header('Location: /Pokemon/list');
+        //
+    }
 }
