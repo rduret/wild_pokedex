@@ -126,7 +126,7 @@ class PokemonController extends AbstractController
             // else if validation is ok, upload file then insert and redirect
             else {
                 $id = $this->pokemonManager->insert($pokemonValues);
-                //header('Location:/item/show/' . $id);
+                header('Location:/pokemon/details/' . $id);
             }
         }
         //else we show the form
