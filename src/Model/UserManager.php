@@ -30,4 +30,16 @@ class UserManager extends AbstractManager
 
         return $statement->fetchAll();
     }
+
+    /*     Delete trainer */
+    public function deleteTrainerById(int $id)
+    {
+        $query = 'DELETE FROM User WHERE id = :id';
+        // :id to bind with bind value
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        // returns lines which have been affected by an INSERT, UPDATE or DELETE
+        return $statement->rowCount();
+    }
 }
