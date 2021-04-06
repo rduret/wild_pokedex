@@ -11,6 +11,9 @@
         <label for="image">Image</label>
         <input type="file" name="image" id="image">
 
+        <label for="model3d">3D Model</label>
+        <input type="file" name="model3d" id="model3d">
+
         {% for i in range(1, 2) %}
             <label for="type{{i}}">Type {{i}}</label>
             <select name="type{{i}}" id="type{{i}}">
@@ -30,7 +33,6 @@
             {% endfor %}
         </select>
         {% endfor %}
-
 
         <input type="submit" value="Add"/>
         <a href="">Cancel</a>

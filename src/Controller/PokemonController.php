@@ -131,6 +131,29 @@ class PokemonController extends AbstractController
                 }
             }
 
+            //Trying to upload model3d file if is set and no errors before
+            if (isset($_FILES['model3d']['name']) && $_FILES['model3d']['name'] !== '') {
+                try {
+                    $file = $_FILES['model3d'];
+                    var_dump($_FILES);
+                    if (pathinfo($file['name'], PATHINFO_EXTENSION) !== "glb") {
+                        echo pathinfo($file['name'], PATHINFO_EXTENSION);
+                        throw new Exception("Format file " . $file['name'] . " is not accepted.");
+                    }   
+
+                    //Upload le fichier
+                    $file = $_FILES['model3d'];
+                    $uploadDir = "assets/models/";
+                    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                    $fileNameUpload = uniqid() . '.' . $extension;
+                    $uploadFile = $uploadDir . $fileNameUpload;
+                    move_uploaded_file($file['tmp_name'], $uploadFile);
+                    $pokemonValues['filePath'] = $uploadFile;
+                } catch (Exception $e) {
+                    $errors[] =  $e->getMessage();
+                }
+            }
+
             //if errors
             if (!empty($errors)) {
                 return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks, 'errors' => $errors]);
