@@ -61,6 +61,8 @@ header li:nth-child(3) a:hover{
 
 body{
     background-color: #232323;
+    color: #fff;
+    font-family: "dogica";
 }
 
 /********************************* Général *****************************/
@@ -143,6 +145,48 @@ body{
 
 .type.Fairy{
     background-color: #ee99ac;
+}
+
+/* Buttons style */
+.btn{
+    padding: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    color: #fff;
+    font-family: 'dogica';
+    font-size: 11px;
+}
+
+.btn:hover{
+    opacity: 0.5;
+}
+
+.btn-delete{
+    background-color: #dc0a2d;
+}
+
+.btn-add{
+    background-color: #70a83b;
+}
+
+.btn-update{
+    background-color: #1260ff;
+}
+
+.btn-show{
+    background-color: #fae101;
+}
+
+.btn-disabled{
+    background-color: #d8d9dd;
+}
+
+.btn-cancel, .btn-back{
+    background-color: #aeadb3;
+}
+
+.btn-save{
+    background-color: #1260ff;
 }
 
 /********************************* PAGE ACCUEIL *******************************/
