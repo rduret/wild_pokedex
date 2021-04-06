@@ -58,14 +58,14 @@ class UserController extends AbstractController
             $pokemonId = $_POST['pokemon_id'];
 
             //Checking if pokemon exist in database if not null
-            $pokemon_exist = false;
+            $pokemonExist = false;
             foreach ($pokemons as $pokemon) {
                 if ($pokemon['id'] === $pokemonId) {
-                    $pokemon_exist = true;
+                    $pokemonExist = true;
                 }
             }
 
-            if (!$pokemon_exist && trim($pokemonId) !== "") {
+            if (!$pokemonExist && trim($pokemonId) !== "") {
                 $errors[] = "The selected pokemon does not exist. Please select a correct value.";
             } else {
                 $this->teamManager->addPokemonToTeam($pokemonId, $teamId[0]);
