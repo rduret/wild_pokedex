@@ -1,5 +1,6 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1>Pokémon attrapez-les tous !</h1>
+    {% include "Trainers/last-trainers.html.twig" %}
+    {% include "Pokemon/list.html.twig" %}
 {% endblock %}
