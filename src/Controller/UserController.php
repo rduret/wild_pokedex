@@ -30,7 +30,7 @@ class UserController extends AbstractController
     public function delete(int $id)
     {
         // Getting the rowCount value which is returned at the end of deleteTrainerById function
-        $rowCount = $this->UserManager->deleteTrainerById($id);
+        $rowCount = $this->userManager->deleteTrainerById($id);
         $validationMessage = $rowCount == 1 ? 'Le trainer a bien été supprimé!' : 'erreur!';
         // créer une variable de session $_SESSION['dlt_trainer_msg']
         $_SESSION['dlt_trainer_msg'] = $validationMessage;
