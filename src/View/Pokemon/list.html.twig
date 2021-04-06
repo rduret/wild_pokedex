@@ -1,21 +1,16 @@
-{% extends 'layout.html.twig' %}
-
-{% block title %} All Pokemons{% endblock %}
-
-{% block content %}
-    {{validationMessage}}
+<div class="pokemons-container">
+    <h2>Pokemon List</h2>
+    <div class="pokemons-list">
     {% for pokemon in pokemons %}
-        <p>{{pokemon.name}}</p>
-        <p>{{pokemon.image}}</p>
-        <ul>
-        {% for type in pokemon.types %}
-            <li>{{type}}</li>
-        {% endfor %}
-        </ul>
-        <ul>
-        {% for attack in pokemon.attacks %}
-            <li>{{attack}}</li>
-        {% endfor %}
-        </ul>
+        <div class="pokemon">
+            <img src="{{ pokemon.image }}"/>
+            <div class="description">
+                <p class="name">{{pokemon.name}}</p>
+                {% for type in pokemon.types %}
+                    <p class="type {{type}}">{{type}}</p>
+                {% endfor %}
+            </div>
+        </div>
     {% endfor %}
-{% endblock %}
+    </div>
+</div>

@@ -45,7 +45,6 @@ class AuthController extends AbstractController
                 if($user){
                     $role = $this->roleManager->selectOneById($user['role_id']);
                     $_SESSION['username'] = $_POST['username'];   
-                    var_dump($role); 
                     $_SESSION['userRole'] = $role['role'];
                     header('Location: /');
                 }else{
