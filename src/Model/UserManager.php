@@ -45,6 +45,7 @@ class UserManager extends AbstractManager
         return $statement->rowCount();
     }
 
+
     /**
      * Get user's team_id by its own id
      * @param int $userId
@@ -57,4 +58,5 @@ class UserManager extends AbstractManager
         $statement->execute();
         return $statement->fetchAll();
     }
+
 }
