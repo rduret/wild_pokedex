@@ -23,4 +23,8 @@ class UserController extends AbstractController
 
         return $this->twig->render('User/list.html.twig', ['trainers' => $trainers]);
     }
+
+    public function addPokemon()
+    {
+    }
 }
