@@ -46,6 +46,7 @@ class AuthController extends AbstractController
                     $role = $this->roleManager->selectOneById($user['role_id']);
                     $_SESSION['username'] = $_POST['username'];   
                     $_SESSION['userRole'] = $role['role'];
+                    $_SESSION['userId'] = $user['id'];
                     header('Location: /');
                 }else{
                     $errors[] = "Username does not exist or wrong password";
