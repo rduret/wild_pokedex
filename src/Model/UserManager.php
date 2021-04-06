@@ -16,4 +16,18 @@ class UserManager extends AbstractManager
 
         return $statement->fetch();
     }
+
+    /**
+     * Select all users with trainer role
+     */
+
+    public function selectByRole(int $roleId)
+    {
+        // prepared request
+        $statement = $this->pdo->prepare("SELECT * FROM " . static::TABLE . " WHERE role_id =:roleId");
+        $statement->bindValue('roleId', $roleId, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }
