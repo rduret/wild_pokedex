@@ -8,12 +8,14 @@ class TeamManager extends AbstractManager
 
     /**
      * Add pokemon to team with IDs
-     * @param $pokemonId
-     * @param $teamId
+     * @param int $pokemonId
+     * @param int $teamId
      */
     public function addPokemonToTeam(int $pokemonId, int $teamId)
     {
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`pokemon_id`, `team_id`) VALUES (:pokemon_id, :team_id)");
+        $statement = $this->pdo->prepare(
+            "INSERT INTO " . self::TABLE . " (`pokemon_id`, `team_id`) VALUES (:pokemon_id, :team_id)"
+        );
         $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
         $statement->bindValue('team_id', $teamId, \PDO::PARAM_INT);
         $statement->execute();
@@ -21,8 +23,8 @@ class TeamManager extends AbstractManager
 
     /**
      * Delete Pokemon from team with IDs
-     * @param $pokemonId
-     * @param $teamId
+     * @param int $pokemonId
+     * @param int $teamId
      */
     public function deletePokemonFromTeam(int $pokemonId, int $teamId)
     {
