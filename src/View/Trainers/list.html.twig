@@ -1,3 +1,12 @@
-    <div class="users-container">
-        <h2>Last trainers</h2>
-    </div>
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	All Trainers
+{% endblock %}
+
+{% block content %}
+	{{validationMessage}}
+	{% for trainer in trainers %}
+		<p>{{trainer.name}}</p>
+	{% endfor %}
+{% endblock %}
