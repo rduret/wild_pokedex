@@ -9,6 +9,8 @@
 
 namespace App\Controller;
 
+use App\Model\PokemonManager;
+
 class HomeController extends AbstractController
 {
     /**
@@ -19,8 +21,18 @@ class HomeController extends AbstractController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
+
+     private PokemonManager $pokemonManager;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pokemonManager = new PokemonManager;
+    }
+    
     public function index()
     {
-        return $this->twig->render('Home/index.html.twig');
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
+        return $this->twig->render('Home/index.html.twig',['pokemons' => $pokemons]);
     }
 }

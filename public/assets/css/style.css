@@ -1,0 +1,199 @@
+@font-face {
+    font-family: 'dogica';
+    src: url('../fonts/dogica.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'dogica-bold';
+    src: url('../fonts/dogicabold.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'dogica-pixel';
+    src: url('../fonts/dogicapixel.ttf') format('truetype');
+}  
+
+@font-face {
+    font-family: 'dogica-pixel-bold';
+    src: url('../fonts/dogicapixelbold.ttf') format('truetype');
+}  
+
+header{
+    color: #fff;
+    font-family: 'dogica-pixel';
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    align-items: center;
+    background-color: #dc0a2d;
+}
+
+header ul{
+    white-space: nowrap;
+}
+
+header li{
+    display: inline;
+    margin-right: 40px;
+}
+
+header a{
+    text-decoration: none;
+    color: #fff;
+}
+
+header li:hover{
+    color: #f83052;
+    cursor: pointer;
+}
+
+header li:nth-child(1) a:hover{
+    color: #f83052;
+}
+
+header li:nth-child(2) a:hover{
+    color: #e6cc29;
+}
+
+header li:nth-child(3) a:hover{
+    color: #418d4d;
+}
+
+body{
+    background-color: #232323;
+}
+
+/********************************* Général *****************************/
+
+.type{
+    text-align: center;
+    color: #232323;
+    font-family: "dogica";
+    font-size: 13px ;
+    padding: 4px;
+}
+
+.type.Grass{
+    background-color: #78c850;
+}
+
+.type.Poison{
+    background-color: #a040a0;
+}
+
+.type.Normal{
+    background-color: #a8a878;
+}
+
+.type.Fighting{
+    background-color: #c03028;
+}
+
+.type.Flying{
+    background-color: #a890f0;
+}
+
+.type.Ground{
+    background-color: #e0c068;
+}
+
+.type.Rock{
+    background-color: #b8a038;
+}
+
+.type.Bug{
+    background-color: #a8b820;
+}
+
+.type.Ghost{
+    background-color: #705898;
+}
+
+.type.Steel{
+    background-color: #b8b8d0;
+}
+
+.type.Water{
+    background-color: #6890f0;
+}
+
+.type.Electric{
+    background-color: #f8d030;
+}
+
+.type.Fire{
+    background-color: #f08030;
+}
+
+.type.Psychic{
+    background-color: #f85888;
+}
+
+.type.Ice{
+    background-color: #98d8d8;
+}
+
+.type.Dragon{
+    background-color: #7038f8;
+}
+
+.type.Dark{
+    background-color: #705848;
+}
+
+.type.Fairy{
+    background-color: #ee99ac;
+}
+
+/********************************* PAGE ACCUEIL *******************************/
+
+.pokemons-container h2, .users-container h2{
+    font-family: "dogica-pixel-bold";
+    color: #fff;
+}
+
+.pokemons-container .pokemons-list{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.pokemons-container .pokemon{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 400px;
+    border: rgb(255, 167, 0) solid 2px;
+    width: 20%;
+    margin: 20px;
+    background-color: #3e3c39;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 9px 12px 2px 0px rgba(243, 199, 27, 0.2);
+}
+
+
+.pokemons-container .pokemon img{
+    width: 75%;
+}
+
+.pokemons-container .pokemon .name{
+    font-family: "dogica-bold";
+    text-transform: capitalize;
+}
+
+footer{
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    background-color: #dc0a2d;
+    height: 150px;
+    margin-top: 100px;
+}
+
+footer div{
+    font-family: 'dogica';
+}
