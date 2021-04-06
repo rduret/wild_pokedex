@@ -132,7 +132,7 @@ class PokemonController extends AbstractController
             }
 
             //Trying to upload model3d file if is set and no errors before
-            if (isset($_FILES['model3d']['name']) && $_FILES['model3d']['name'] !== '') {
+            if (isset($_FILES['model3d']['name']) && $_FILES['model3d']['name'] !== '' && empty($errors)) {
                 try {
                     $file = $_FILES['model3d'];
                     var_dump($_FILES);
