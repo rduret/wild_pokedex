@@ -2,7 +2,7 @@
     <h2>Pokemon List</h2>
     <div class="pokemons-list">
     {% for pokemon in pokemons %}
-        <div class="pokemon">
+        <a href="pokemon/details/{{pokemon.id}}" class="pokemon">
             <img src="{{ pokemon.image }}"/>
             <div class="description">
                 <p class="name">{{pokemon.name}}</p>
@@ -10,7 +10,7 @@
                     <p class="type {{type}}">{{type}}</p>
                 {% endfor %}
             </div>
-        </div>
+        </a>
     {% endfor %}
     </div>
 </div>
