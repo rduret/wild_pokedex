@@ -148,9 +148,8 @@ class PokemonController extends AbstractController
         // Getting the rowCount value which is returned at the end of deletePokemonFromList function
         $rowCount = $this->pokemonManager->deletePokemonFromList($id);
         $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de la liste!' : 'erreur!';
-        // créer une variable de session $_SESSION['dlt_pok_msg']
         $_SESSION['dlt_pok_msg'] = $validationMessage;
         header('Location: /Pokemon/list');
-        //
+        // dans la fonction delete on doit rajouter la suppression du fichier
     }
 }
