@@ -36,10 +36,20 @@ body{
     font-family: "dogica";
     margin:0;
     line-height: 20px;
+    font-size: 13px;
 }
 
 .container{
-    margin: 25px;
+    margin: 50px;
+}
+
+a{
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover{
+    color: rgb(255, 167, 0);
 }
 
 /* NavBar */
@@ -114,15 +124,15 @@ body{
     color: white;
   }
 
-  .topnav a:nth-child(2):hover{
+  .topnav a:nth-child(1):hover{
     color: #f83052;
 }
 
-.topnav a:nth-child(3):hover{
+.topnav a:nth-child(2):hover{
     color: #e6cc29;
 }
 
-.topnav a:nth-child(4):hover{
+.topnav a:nth-child(3):hover{
     color: #418d4d;
 } 
   
@@ -136,6 +146,9 @@ body{
   }
   
   @media screen and (max-width: 600px) {
+    .container{
+        margin: 25px;
+    }
     #login-title{
         font-size: 18px;
     }
@@ -178,7 +191,32 @@ body{
       text-align: left;
     }
   }
+/************* Trainer list page ******************/
+.trainer-list{
+  border-spacing: 0;
+  width: 100%;
+  border: 2px solid #4c4c4c;
+  margin-top: 25px;
+}
 
+.trainer-list th, .trainer-list td{
+  text-align: left;
+  padding: 8px;
+  width: 50%;
+  border:2px solid #232323;
+}
+
+.trainer-list th{
+    background-color: #69aacb;
+}
+
+.trainer-list tr:nth-child(even){
+    background-color: #f2f2f2;
+    color: #232323;
+}
+.trainer-list tr{
+    background-color: #4c4c4c;
+}
 /********************************* Général *****************************/
 
 .type{
@@ -295,7 +333,7 @@ body{
     background-color: #d8d9dd;
 }
 
-.btn-cancel, .btn-back{
+.btn-cancel{
     background-color: #aeadb3;
 }
 
@@ -396,13 +434,7 @@ body{
 }
 
 .details a{
-    color: #fff;
-    text-decoration: none;
     margin-left: 35px;
-}
-
-.details a:hover{
-    color: rgb(255, 167, 0);
 }
 
 .details .container{
