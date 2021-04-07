@@ -18,7 +18,11 @@
 					<tr>
 						<td>{{trainer.name}}</td>
 						{% if trainer.team_id != null %}
-							<td>{{trainer.team_id}}</td>
+							<td>
+							{% for pokemon in trainer.pokemons %}
+							{{pokemon}}
+							{% endfor %}
+							</td>
 						{% else %}
 							<td>No team</td>
 						{% endif %}

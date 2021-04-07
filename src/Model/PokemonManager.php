@@ -142,6 +142,15 @@ class PokemonManager extends AbstractManager
         // returns lines which have been affected by an INSERT, UPDATE or DELETE
         return $statement->rowCount();
     }
+
+    public function selectPokemonNameById(int $id)
+    {
+        $statement = $this->pdo->prepare("SELECT name FROM " . static::TABLE . " WHERE id = :id");
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }
 
     /**

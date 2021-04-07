@@ -21,12 +21,36 @@ class UserController extends AbstractController
     }
 
     /**
-     * List all trainers
+     * List all trainers and their pokemons
      */
     public function list()
     {
         $trainers = $this->userManager->selectByRole(2);
+        $pokemonsInTeam = [];
 
+
+        //Loop on trainers to get their pokemons
+        foreach ($trainers as $index => $trainer) {
+            $trainer['pokemons'] = [];
+            $teamId = $trainer['team_id'];
+            //Store pokemon_id from each pokemon in team
+            $pokemonsInTeam = $this->listPokemonTeam($teamId);
+
+
+
+            //Loop on pokemons in team to store their names into $trainers
+            foreach ($pokemonsInTeam as $key => $pokemon) {
+                $pokemonNameRequest = $this->pokemonManager->selectPokemonNameById($pokemon['pokemon_id']);
+                //Keep only the string value
+
+                $pokemonName = $pokemonNameRequest[0]['name'];
+                //Store the each string within $trainer with the index 'pokemons'
+                array_push($trainer['pokemons'], $pokemonName);
+            }
+            $trainers[$index] = $trainer;
+        }
+        // var_dump($trainers);
+        // exit();
         return $this->twig->render('Trainers/list.html.twig', ['trainers' => $trainers]);
     }
 
@@ -118,5 +142,13 @@ class UserController extends AbstractController
         $_SESSION['dlt_pokTeam_msg'] = $validationMessage;
         header('Location: /Pokemon/list');
         //
+    }
+
+    /**
+     * Get all pokemons within a team (team_id)
+     */
+    public function listPokemonTeam(int $teamId)
+    {
+        return $this->teamManager->selectPokemonsInTeam($teamId);
     }
 }

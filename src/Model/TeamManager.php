@@ -36,4 +36,17 @@ class TeamManager extends AbstractManager
         // returns lines which have been affected by an INSERT, UPDATE or DELETE
         return $statement->rowCount();
     }
+
+    /**
+     * Select all pokemons within a team_id
+     * @param int $teamId
+     */
+    public function selectPokemonsInTeam(int $teamId)
+    {
+        $statement = $this->pdo->prepare("SELECT pokemon_id FROM " . static::TABLE . " WHERE team_id = :team_id");
+        $statement->bindValue(':team_id', $teamId, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }
