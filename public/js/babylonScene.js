@@ -1,7 +1,7 @@
 const canvas = document.getElementById("renderCanvas"); // Get the canvas element
 const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-
-
+const filePath = document.getElementById("model3d").innerHTML;
+const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
 //***PG */
 
 
@@ -24,12 +24,10 @@ var createScene = function () {
         
         //Get the model's bounding size to adapt camera view
         var modelSize = model.meshes[1].getBoundingInfo().boundingBox.extendSize;
-
-
-        console.log(modelSize);
     };
     
-    loadMeshes("", "/", "pikachu.glb");
+
+    loadMeshes("", "/assets/models/", fileName);
 
     //Setup environment
     var env = scene.createDefaultEnvironment({ 
