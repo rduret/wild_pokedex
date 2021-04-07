@@ -23,9 +23,12 @@
 
 		<div class="topnav" id="myTopnav">
 			<a href="/">Home</a>
-			<a href="/user/list">All Trainers</a>
-			<a href="/auth/login">Login</a>
-			<a href="#logout">Logout</a>
+			{% if session.username is defined %}
+				<a href="/user/list">All Trainers</a>
+				<a href="/auth/logout">Logout</a>
+			{% else %}
+				<a href="/auth/login">Login</a>
+			{% endif %}
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveMenu()">&#9776;</a>
 		</div>
 
@@ -48,4 +51,4 @@ x.className = "topnav";
 }
 		</script>
 	</body>
-</html>
+</html></body></html></body></html>
