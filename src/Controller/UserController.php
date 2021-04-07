@@ -53,8 +53,6 @@ class UserController extends AbstractController
     public function listTeams()
     {
         $teams = $this->teamManager->selectAll();
-
-        var_dump($teams);
     }
 
     /**
