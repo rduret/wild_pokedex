@@ -168,9 +168,24 @@ class PokemonController extends AbstractController
         //else we show the form
         return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks]);
     }
+
+
     public function delete(int $id)
     {
-        // Getting the rowCount value which is returned at the end of deletePokemonFromList function
+        //Delete Files attached to the pokemon
+        $pokemon = $this->pokemonManager->selectOneById($id);
+        $pathImage = substr($pokemon['image'], 1);
+        $pathModel = substr($pokemon['model3d'], 1);
+
+        if ($pathImage !== "" && file_exists($pathImage)) {
+            unlink($pathImage);
+        }
+
+        if ($pathModel !== "" && file_exists($pathModel)) {
+            unlink($pathModel);
+        }
+
+         // Getting the rowCount value which is returned at the end of deletePokemonFromList function
         $rowCount = $this->pokemonManager->deletePokemonFromList($id);
         $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de la liste!' : 'erreur!';
         // créer une variable de session $_SESSION['dlt_pok_msg']
