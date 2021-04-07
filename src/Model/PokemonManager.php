@@ -12,9 +12,10 @@ class PokemonManager extends AbstractManager
     public function insert(array $pokemonValues): int
     {
         //Add pokemon into pokemon table
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`name`, `image`) VALUES (:name, :image)");
+        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`name`, `image`, `model3d`) VALUES (:name, :image, :model3d)");
         $statement->bindValue('name', $pokemonValues['name'], \PDO::PARAM_STR);
         $statement->bindValue('image', $pokemonValues['filePath'], \PDO::PARAM_STR);
+        $statement->bindValue('model3d', $pokemonValues['modelPath'], \PDO::PARAM_STR);
         $statement->execute();
 
         $idPokemon = (int)$this->pdo->lastInsertId();
