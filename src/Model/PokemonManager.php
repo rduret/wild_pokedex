@@ -86,8 +86,7 @@ class PokemonManager extends AbstractManager
 
         //we had every attacks into the pokemon attacks array
         foreach ($pokemonAttacks as $attack) {
-            $pokemon['attacks']['name'] = $attack['name'];
-            $pokemon['attacks']['type'] = $attack['type'];
+            $pokemon['attacks'][] = ["name" => $attack['name'], "type" => $attack["type"]];
         }
 
         return $pokemon;
