@@ -64,7 +64,7 @@ class UserController extends AbstractController
         if ($teamIdRequest[0]) {
             $teamId = intval($teamIdRequest[0]); //Convert the string value stored in $_SESSION to int
         } else {
-            $errors[] = "The selected pokemon does not exist in team. Please select a correct value.";
+            $errors[] = "The selected team does not exist. Please select a correct value.";
         }
 
         //Checking if pokemon exist in database if not null
