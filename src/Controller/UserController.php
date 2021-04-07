@@ -90,12 +90,21 @@ class UserController extends AbstractController
      * Delete pokemon from a team
      */
 
-    public function deletePokemon($pokemonId, $teamId)
+    public function deletePokemon($pokemonId)
     {
-        $teamId = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
-        $pokemonId = $_POST['pokemon_id'];
+        //Get the team_id from a user id (returns an array, but we expect only one element)
+        $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
+        $teamId = null;
+        $errors = [];
+
+        if ($teamIdRequest[0]) {
+            $teamId = intval($teamIdRequest[0]); //Convert the string value stored in $_SESSION to int
+        } else {
+            $errors[] = "The selected team does not exist. Please select a correct value.";
+        }
+
         // Getting the rowCount value which is returned at the end of deletePokemonFromTeam function
-        $rowCount = $this->teamManager->deletePokemonFromTeam($pokemonId, $teamId[0]);
+        $rowCount = $this->teamManager->deletePokemonFromTeam($pokemonId, $teamId);
         $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de l\'équipe!' : 'erreur!';
         // créer une variable de session $_SESSION['dlt_pokTeam_msg']
         $_SESSION['dlt_pokTeam_msg'] = $validationMessage;
