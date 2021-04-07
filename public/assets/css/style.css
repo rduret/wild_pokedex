@@ -389,6 +389,98 @@ body{
     text-transform: capitalize;
 }
 
+
+/******************************** DETAILS ******************************/
+
+.details{
+    padding-top: 50px;
+}
+
+.details a{
+    color: #fff;
+    text-decoration: none;
+    margin-left: 35px;
+}
+
+.details a:hover{
+    color: rgb(255, 167, 0);
+}
+
+.details .container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.details .container .figure{
+    width: 45%;
+    max-width: 50%;
+}
+
+.details .container .figure img{
+    max-width: 100%;
+}
+
+.details .container .figure canvas{
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.details .container .infos{
+    width: 40%;
+    text-align: center;
+}
+
+.details .container .infos .name{
+    font-size: 50px;
+}
+
+.details .container .infos .types{
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    width: 40%;
+}
+
+.details .container .infos .type{
+    font-size: 20px;
+}
+
+.details .container .infos .attacks{
+    width: 45%; 
+    margin: auto;
+    text-align: left;
+}
+
+.details .container .infos .attacks span{
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+@media only screen and (max-width : 1250px){
+    .details .container{
+        flex-direction: column;
+    }
+
+    .details .container .infos{
+        width: 100%;
+    }
+    
+    .details .container .infos .name{
+        font-size: 50px;
+    }
+    
+    .details .container .infos .types{
+        width: 50%;
+    }
+}
+    
+
+/******************************** footer ***********************/
 footer{
     color: #fff;
     text-align: center;

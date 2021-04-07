@@ -8,10 +8,15 @@
 		<title>
 			{% block title %}{% endblock %}
 		</title>
+    
+    <link rel="stylesheet" href="/assets/css/style.css">
+    {% block stylesheet %}{% endblock %}
+    <link rel="icon" href="/assets/images/favicon.png">
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
 
-		<link rel="stylesheet" href="/assets/css/style.css"> {% block stylesheet %}{% endblock %}
-		<link rel="icon" href="/assets/images/favicon.png">
-	</head>
 
 	<body>
 		<div class="logo-wrapper">

@@ -125,7 +125,7 @@ class PokemonController extends AbstractController
                     $fileNameUpload = uniqid() . '.' . $extension;
                     $uploadFile = $uploadDir . $fileNameUpload;
                     move_uploaded_file($file['tmp_name'], $uploadFile);
-                    $pokemonValues['filePath'] = $uploadFile;
+                    $pokemonValues['filePath'] = '/' . $uploadFile;
                 } catch (Exception $e) {
                     $errors[] =  $e->getMessage();
                 }
@@ -148,10 +148,12 @@ class PokemonController extends AbstractController
                     $fileNameUpload = uniqid() . '.' . $extension;
                     $uploadFile = $uploadDir . $fileNameUpload;
                     move_uploaded_file($file['tmp_name'], $uploadFile);
-                    $pokemonValues['filePath'] = $uploadFile;
+                    $pokemonValues['modelPath'] = '/' . $uploadFile;
                 } catch (Exception $e) {
                     $errors[] =  $e->getMessage();
                 }
+            }else{
+                $pokemonValues['modelPath'] = "";
             }
 
             //if errors
