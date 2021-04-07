@@ -52,13 +52,23 @@ class PokemonManager extends AbstractManager
      */
     public function selectPokemonAttacksById($id)
     {
-        $query = 'SELECT Attack.name 
+        $query = 'SELECT Attack.name name, Type.name type
         FROM Attack JOIN Pokemon_Attack ON Attack.id = attack_id
         JOIN Pokemon ON pokemon_id = Pokemon.id 
+        JOIN Type ON Type.id = Attack.type_id
         WHERE pokemon_id = ' . $id;
         return $this->pdo->query($query)->fetchAll();
     }
 
+
+    public function selectTypeByAttackId($id)
+    {
+        $query = 'SELECT Type.name FROM Type 
+        JOIN Attack ON Attack.type_id = Type.id
+        WHERE Attack.id = ' . $id;
+        return $this->pdo->query($query)->fetch();
+    }
+    
     /**
      * Select on pokemon by id with his attacks and types
      */
@@ -76,7 +86,8 @@ class PokemonManager extends AbstractManager
 
         //we had every attacks into the pokemon attacks array
         foreach ($pokemonAttacks as $attack) {
-            $pokemon['attacks'][] = $attack['name'];
+            $pokemon['attacks']['name'] = $attack['name'];
+            $pokemon['attacks']['type'] = $attack['type'];
         }
 
         return $pokemon;
