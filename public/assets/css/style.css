@@ -320,7 +320,6 @@ body{
 }
 
 .login-background{
-    /*background-image: url("/assets/images/Pokedex.png");*/
     background-image: url("https://images.alphacoders.com/998/thumb-1920-998181.jpg");
     background-repeat: no-repeat;
     background-size: cover;
