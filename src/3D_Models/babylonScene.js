@@ -29,7 +29,7 @@ var createScene = function () {
         console.log(modelSize);
     };
     
-    loadMeshes("", "/", "psyduck.glb");
+    loadMeshes("", "/", "pikachu.glb");
 
     //Setup environment
     var env = scene.createDefaultEnvironment({ 
