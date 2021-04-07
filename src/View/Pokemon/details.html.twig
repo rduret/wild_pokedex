@@ -23,7 +23,7 @@
                 <div class="name">{{pokemon.name}}</div>
                 <div class="types">
                     {% for type in pokemon.types %}
-                        <p class="type {{type}}">{{type}}</p>
+                        <p class="type {{type.name}}">{{type.name}}</p>
                     {% endfor %}
                 </div>
                 <div class="attacks">

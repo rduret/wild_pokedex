@@ -135,9 +135,7 @@ class PokemonController extends AbstractController
             if (isset($_FILES['model3d']['name']) && $_FILES['model3d']['name'] !== '' && empty($errors)) {
                 try {
                     $file = $_FILES['model3d'];
-                    var_dump($_FILES);
                     if (pathinfo($file['name'], PATHINFO_EXTENSION) !== "glb") {
-                        echo pathinfo($file['name'], PATHINFO_EXTENSION);
                         throw new Exception("Format file " . $file['name'] . " is not accepted.");
                     }
 
@@ -181,55 +179,132 @@ class PokemonController extends AbstractController
 
     public function update($id)
     {
+        $allowedMime = ['jpg', 'jpeg', 'png' ];
+        $sizeMax = 2000000;
         $newPokemon = [];
-        $pokemonOld = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
+        $errors = [];
+        $types = $this->typeManager->selectAll();
+        $attacks = $this->attackManager->selectAll();
+        $oldPokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
+
+        var_dump($oldPokemon);
         // first value of pokemon
-        var_dump($pokemonOld);
-        if ($pokemonOld) {
+        if ($oldPokemon) {
             if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
-                if (isset($_POST['name']) && $_POST['name'] !== '') {
+                // checking if new value 'name' is set
+                if (isset($_POST['name']) && trim($_POST['name']) !== '') {
                     $newPokemon['name'] = $_POST['name'];
                 } else {
-                    $newPokemon['name'] = $pokemonOld['name'];
+                    $newPokemon['name'] = $oldPokemon['name'];
                 }
 
+                for ($i = 1; $i <= 2; $i++) {
+                    if ($_POST['type' . $i] == '') {
+                        $newPokemon['types'][] = $oldPokemon['types'][$i-1];
+                    } else {
+                        $type_exist = false;
+                        foreach ($types as $type) {
+                            if ($type['id'] === $_POST['type' . $i]) {
+                                $type_exist = true;
+                            }
+                        }
+                        if (!$type_exist) {
+                            $errors[] = "Type $i does not exist. Please select a correct value.";
+                        } else {
+                            $newPokemon['type' . $i] = $_POST['type' . $i];
+                        }
+                    }
+                }
+
+                for ($i = 1; $i <= 4; $i++) {
+                    if ($_POST['attack' . $i] == '') {
+                        $newPokemon['attack' . $i] = $oldPokemon['attacks'][$i-1]['id'];
+                    } else {
+                        $attack_exist = false;
+                        foreach ($attacks as $attack) {
+                            if ($attack['id'] === $_POST['attack' . $i]) {
+                                $attack_exist = true;
+                            }
+                        }
+                        if (!$attack_exist) {
+                            $errors[] = "Attack $i does not exist. Please select a correct value.";
+                        } else {
+                            $newPokemon['attack' . $i] = $_POST['attack' . $i];
+                        }
+                    }
+                }
+    
+                // same for image
                 if (isset($_FILES['image']['name']) && $_FILES['image']['name'] !== '') {
-                    $newPokemon['image'] = $_FILES['image']['name'];
+                    if (empty($errors)) {
+                        try {
+                            $file = $_FILES['image'];
+                            if (!in_array(pathinfo($file['name'], PATHINFO_EXTENSION), $allowedMime)) {
+                                throw new Exception("Format file " . $file['name'] . " is not accepted.");
+                            }
+                            if ($file['size'] > $sizeMax) {
+                                throw new Exception("File " . $file['name'] . " is too big : " . $file['size'] . "($sizeMax Octets MAX) ");
+                            }
+                            // Destroy old file
+                            $pathImage = substr($oldPokemon['image'], 1);
+                            if (file_exists($pathImage)) {
+                                unlink($pathImage);
+                            }
+                            unset($oldPokemon['image']);
+                            //Upload le fichier
+                            $uploadDir = "assets/images/";
+                            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                            $fileNameUpload = uniqid() . '.' . $extension;
+                            $uploadFile = $uploadDir . $fileNameUpload;
+                            move_uploaded_file($file['tmp_name'], $uploadFile);
+                            $newPokemon['filePath'] = '/' . $uploadFile;
+                        } catch (Exception $e) {
+                            $errors[] =  $e->getMessage();
+                        }
+                    }
                 } else {
-                    $newPokemon['image'] = $pokemonOld['image'];
+                    $newPokemon['image'] = $oldPokemon['image'];
                 }
-
-                if (isset($_FILES['model3d']) && $_FILES['model3d'] !== '') {
-                    $newPokemon['model3d'] = $_POST['model3d'];
+                // same for 3d model
+                if (isset($_FILES['model3d']['name']) && $_FILES['model3d']['name'] !== '') {
+                    if (empty($errors)) {
+                        try {
+                            $file = $_FILES['model3d'];
+                            if (pathinfo($file['name'], PATHINFO_EXTENSION) !== "glb") {
+                                throw new Exception("Format file " . $file['name'] . " is not accepted.");
+                            }
+                            if ($file['size'] > $sizeMax) {
+                                throw new Exception("File " . $file['name'] . " is too big : " . $file['size'] . "($sizeMax Octets MAX) ");
+                            }
+                            // Destroy old file
+                            $pathModel = substr($oldPokemon['model3d'], 1);
+                            if (file_exists($pathModel)) {
+                                unlink($pathModel);
+                            }
+                            //Upload le fichier
+                            $uploadDir = "assets/models/";
+                            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                            $fileNameUpload = uniqid() . '.' . $extension;
+                            $uploadFile = $uploadDir . $fileNameUpload;
+                            move_uploaded_file($file['tmp_name'], $uploadFile);
+                            $newPokemon['model3d'] = '/' . $uploadFile;
+                        } catch (Exception $e) {
+                            $errors[] =  $e->getMessage();
+                        }
+                    }
+                    if (!empty($errors)) {
+                        return $this->twig->render('Pokemon/update.html.twig', ['errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
+                    } else {
+                        $id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
+                        header('Location: /pokemon/details/' . $id);
+                    }
                 } else {
-                    $newPokemon['model3d'] = $pokemonOld['model3d'];
+                    $newPokemon['model3d'] = $oldPokemon['model3d'];
                 }
-                var_dump($newPokemon);
-            } else {
-                return $this->twig->render('Pokemon/update.html.twig', ['pokemonOld' => $pokemonOld]);
             }
+            return $this->twig->render('Pokemon/update.html.twig', ['types' => $types, 'attacks' => $attacks]);
         } else {
             header('Location: /');
         }
-        return $this->twig->render('Pokemon/update.html.twig', ['pokemonOld' => $pokemonOld]);
     }
-
-    /*     public function update()
-            {
-
-                    // je vérifie si je viens d'un formulaire
-                    // je vérifie mon statut? (admin dresseur, ou visiteur)
-                    // si c'est un admin, redirection à la bonne vue avec boutons de modif sur la liste
-                    // si c'est un dresseur accès à la liste basique et/ou la page home
-                    // sinon, redirection à la page home
-                }
-                if (isset($_SESSION['upt_pok_msg'])) {
-                    $modificationMessage = $_SESSION['upt_pok_msg'];
-                    /* trouver un moyen de créer une modification sur
-                    la valeur de la var courante comme pour unset */
-                /* $rowCountUpdate = $this->pokemonManager->updatePokemon();
-        $modificationMessage = $rowCountUpdate == 1 ? 'Les modifications ont bien été prises en compte!' : 'erreur!';
-        $_SESSION['upt_pok_msg'] = $modificationMessage;
-        header('Location: /Pokemon/list');
-    }   */
 }
