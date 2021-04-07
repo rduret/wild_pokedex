@@ -48,6 +48,14 @@ class UserController extends AbstractController
     }
 
     /**
+     * List all teams with at least one pokemon
+     */
+    public function listTeams()
+    {
+        $teams = $this->teamManager->selectAll();
+    }
+
+    /**
      * Add a pokemon to a team
      */
 
