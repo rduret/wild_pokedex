@@ -51,27 +51,37 @@ class UserController extends AbstractController
      * Add a pokemon to a team
      */
 
-    public function addPokemon()
+    public function addPokemon($pokemonId)
     {
-        $teamId = $this->userManager->selectTeamIdByUserId($_SESSION['id']);
-        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
+        //Get the team_id from a user id (returns an array, but we expect only one element)
+        $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();//Get the pokemons in DB
+        $teamId = null;
+        $errors = [];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errors = [];
-            $pokemonId = $_POST['pokemon_id'];
+        //If the 1st element within the array is not null,
+        //then assign the content to $teamID
+        if ($teamIdRequest[0]) {
+            $teamId = intval($teamIdRequest[0]); //Convert the string value stored in $_SESSION to int
+        } else {
+            $errors[] = "The selected pokemon does not exist in team. Please select a correct value.";
+        }
 
-            //Checking if pokemon exist in database if not null
-            $pokemonExist = false;
-            foreach ($pokemons as $pokemon) {
-                if ($pokemon['id'] === $pokemonId) {
-                    $pokemonExist = true;
-                }
-            }
-
-            if (!$pokemonExist && trim($pokemonId) !== "") {
-                $errors[] = "The selected pokemon does not exist. Please select a correct value.";
+        //Checking if pokemon exist in database if not null
+        $pokemonExist = false;
+        foreach ($pokemons as $pokemon) {
+            if ($pokemon['id'] === $pokemonId) {
+                $pokemonExist = true;
             } else {
-                $this->teamManager->addPokemonToTeam($pokemonId, $teamId[0]);
+                $errors[] = "The selected pokemon does not exist. Please select a correct value.";
+            }
+        }
+
+        if ($pokemonExist && !$errors) {
+            $this->teamManager->addPokemonToTeam($pokemonId, $teamId);
+        } else {
+            foreach ($errors as $error) {
+                echo $error;
             }
         }
     }
@@ -82,10 +92,10 @@ class UserController extends AbstractController
 
     public function deletePokemon($pokemonId, $teamId)
     {
-        $teamId = $_SESSION['id'];
+        $teamId = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
         $pokemonId = $_POST['pokemon_id'];
         // Getting the rowCount value which is returned at the end of deletePokemonFromTeam function
-        $rowCount = $this->teamManager->deletePokemonFromTeam($pokemonId, $teamId);
+        $rowCount = $this->teamManager->deletePokemonFromTeam($pokemonId, $teamId[0]);
         $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de l\'équipe!' : 'erreur!';
         // créer une variable de session $_SESSION['dlt_pokTeam_msg']
         $_SESSION['dlt_pokTeam_msg'] = $validationMessage;
