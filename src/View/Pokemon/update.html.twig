@@ -1,0 +1,44 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Update your pokemon {% endblock %}
+
+{% block content %}
+    <h2>Update your pokémon</h2>
+    <form style="display: flex; flex-direction: column;" action="" method="POST" enctype="multipart/form-data">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name"/>
+
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image">
+
+        <label for="model3d">3D Model</label>
+        <input type="file" name="model3d" id="model3d">
+
+        {% for i in range(1, 2) %}
+            <label for="type{{i}}">Type {{i}}</label>
+            <select name="type{{i}}" id="type{{i}}">
+            <option selected value="">--Choose a type if needed--</option>
+            {% for type in types %}
+                <option value="{{type.id}}">{{type.name}}</option>
+            {% endfor %}
+        </select>
+        {% endfor %}
+
+        {% for i in range(1, 4) %}
+            <label for="attack{{i}}">Attack {{i}}</label>
+            <select name="attack{{i}}" id="attack{{i}}">
+            <option selected value="">--Choose an attack if needed--</option>
+            {% for attack in attacks %}
+                <option value="{{attack.id}}">{{attack.name}}</option>
+            {% endfor %}
+        </select>
+        {% endfor %}
+
+        <input type="submit" value="Add"/>
+        <a href="">Cancel</a>
+
+        {% for error in errors %}
+            <p>{{error}}</p>
+        {% endfor %}
+    </form>
+{% endblock %}

@@ -178,18 +178,58 @@ class PokemonController extends AbstractController
         // dans la fonction delete on doit rajouter la suppression du fichier
     }
 
-    /*     public function update()
-        {
-            if(($_SERVER['REQUEST_METHOD'] === 'POST')){
-                // je veux vérifier si je viens d'un formulaire
+
+    public function update($id)
+    {
+        $newPokemon = [];
+        $pokemonOld = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
+        // first value of pokemon
+        var_dump($pokemonOld);
+        if ($pokemonOld) {
+            if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
+                if (isset($_POST['name']) && $_POST['name'] !== '') {
+                    $newPokemon['name'] = $_POST['name'];
+                } else {
+                    $newPokemon['name'] = $pokemonOld['name'];
+                }
+
+                if (isset($_FILES['image']['name']) && $_FILES['image']['name'] !== '') {
+                    $newPokemon['image'] = $_FILES['image']['name'];
+                } else {
+                    $newPokemon['image'] = $pokemonOld['image'];
+                }
+
+                if (isset($_FILES['model3d']) && $_FILES['model3d'] !== '') {
+                    $newPokemon['model3d'] = $_POST['model3d'];
+                } else {
+                    $newPokemon['model3d'] = $pokemonOld['model3d'];
+                }
+                var_dump($newPokemon);
+            } else {
+                return $this->twig->render('Pokemon/update.html.twig', ['pokemonOld' => $pokemonOld]);
             }
-            if (isset($_SESSION['upt_pok_msg'])) {
-                $modificationMessage = $_SESSION['upt_pok_msg'];
-                /* trouver un moyen de créer une modification sur
-                la valeur de la var courante comme pour unset */
-/*         $rowCountUpdate = $this->pokemonManager->updatePokemon();
+        } else {
+            header('Location: /');
+        }
+        return $this->twig->render('Pokemon/update.html.twig', ['pokemonOld' => $pokemonOld]);
+    }
+
+    /*     public function update()
+            {
+
+                    // je vérifie si je viens d'un formulaire
+                    // je vérifie mon statut? (admin dresseur, ou visiteur)
+                    // si c'est un admin, redirection à la bonne vue avec boutons de modif sur la liste
+                    // si c'est un dresseur accès à la liste basique et/ou la page home
+                    // sinon, redirection à la page home
+                }
+                if (isset($_SESSION['upt_pok_msg'])) {
+                    $modificationMessage = $_SESSION['upt_pok_msg'];
+                    /* trouver un moyen de créer une modification sur
+                    la valeur de la var courante comme pour unset */
+                /* $rowCountUpdate = $this->pokemonManager->updatePokemon();
         $modificationMessage = $rowCountUpdate == 1 ? 'Les modifications ont bien été prises en compte!' : 'erreur!';
         $_SESSION['upt_pok_msg'] = $modificationMessage;
         header('Location: /Pokemon/list');
-    }  */
+    }   */
 }

@@ -119,7 +119,6 @@ class PokemonManager extends AbstractManager
         $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
         $statement->execute();
     }
-
     
     /**
      * Add type to pokemon with IDs
@@ -142,18 +141,15 @@ class PokemonManager extends AbstractManager
         // returns lines which have been affected by an INSERT, UPDATE or DELETE
         return $statement->rowCount();
     }
-}
-
-    /**
+    /*
      * Update pokemon in database
      */
-/*     public function updatePokemon($typeId, $attackId, $pokemonId)
+    public function updatePokemon($name, $image, $model3d, $typeId)
     {
-        // $statement= $this->pdo>prepare("UPDATE" . )
-        $statement = $this->pdo->prepare("UPDATE" . self::TABLE . "SET (`pokemon_id`, `attack_id`) VALUES (:pokemon_id, :attack_id)");
-        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
-        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
-        $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
-
+        $statement = $this->pdo->prepare("UPDATE" . self::TABLE . "SET (`name`, `image`, `model3d`) VALUES (:name, :image, :model3d)");
+        $statement->bindValue('name', $name, \PDO::PARAM_STR);
+        $statement->bindValue('image', $image, \PDO::PARAM_STR);
+        $statement->bindValue('model3d', $model3d, \PDO::PARAM_STR);
         return $statement->execute();
-    } */
+    }
+}
