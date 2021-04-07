@@ -1,3 +1,18 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}{{pokemon.name}}{% endblock %}
+
+{% block content %}
+    <div class="figure">
+        {% if pokemon.model3d != "" %}
+            model3d
+        {% else %}
+            <img src="{{pokemon.image}}">
+        {% endif %}
+    </div>
+    <div class="infos">
+        <div>Name</div>
+        <div>Types</div>
+        <div>Attacks</div>
+    </div>
+{% endblock %}
