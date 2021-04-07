@@ -414,6 +414,7 @@ body{
 }
 
 .details .container .figure{
+    text-align: center;
     width: 45%;
     max-width: 50%;
 }
