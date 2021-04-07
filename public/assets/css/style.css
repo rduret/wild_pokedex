@@ -35,10 +35,10 @@ body{
     color: #fff;
     font-family: "dogica";
     margin:0;
+    line-height: 20px;
 }
 
 .container{
-    width: 100%;
     margin: 25px;
 }
 
@@ -136,6 +136,16 @@ body{
   }
   
   @media screen and (max-width: 600px) {
+    #login-title{
+        font-size: 18px;
+    }
+    .login-form{
+        width: 85%!important;
+        padding: 25px!important;
+    }
+    .login-form input{
+        width: 100%;
+    }
     .logo{
         width: 33%;
     }
@@ -293,6 +303,45 @@ body{
     background-color: #1260ff;
 }
 
+.btn-default{
+    background-color: #dc0a2d;
+}
+
+/***************** LOGIN PAGE *********************/
+.login-form{
+    background-color: #232323;
+    padding: 50px;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.login-background{
+    /*background-image: url("/assets/images/Pokedex.png");*/
+    background-image: url("https://images.alphacoders.com/998/thumb-1920-998181.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    padding: 50px;
+}
+
+.login-submit{
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+}
+
+.login-fields{
+    margin-bottom: 25px;
+}
+
+#login-title{
+    margin-bottom:30px;
+}
+
 /********************************* PAGE ACCUEIL *******************************/
 
 .pokemons-container h2, .users-container h2{
@@ -344,7 +393,6 @@ footer{
     color: #fff;
     text-align: center;
     background-color: #dc0a2d;
-    line-height: 20px;
     font-size: 12px;
     position: fixed;
     bottom: 0;
