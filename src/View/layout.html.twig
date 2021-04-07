@@ -28,8 +28,10 @@
 			<a href="#logout">Logout</a>
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveMenu()">&#9776;</a>
 		</div>
-
-		{% block content %}{% endblock %}
+		
+		<div class="container">
+			{% block content %}{% endblock %}
+		</div>
 		{% block javascript %}{% endblock %}
 		<footer>
 			<div>
