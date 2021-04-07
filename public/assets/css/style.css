@@ -207,7 +207,7 @@ a:hover{
 }
 
 .trainer-list th{
-    background-color: red;
+    background-color: #69aacb;
 }
 
 .trainer-list tr:nth-child(even){
