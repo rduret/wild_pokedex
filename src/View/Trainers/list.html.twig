@@ -5,9 +5,27 @@
 {% endblock %}
 
 {% block content %}
-	{{validationMessage}}
-	{% for trainer in trainers %}
-		<p>{{trainer.name}}</p>
-	{% endfor %}
-	<button onclick="location.href='/'" class="btn btn-back">Back home</button>
+	<div class="container">
+		<h2>All trainers</h2>
+		<a href='/'>Back to home</a>
+		<div style="overflow-x:auto;">
+			<table class="trainer-list">
+				<tr>
+					<th>Trainer name</th>
+					<th>Team</th>
+				</tr>
+				{% for trainer in trainers %}
+					<tr>
+						<td>{{trainer.name}}</td>
+						{% if trainer.team_id != null %}
+							<td>{{trainer.team_id}}</td>
+						{% else %}
+							<td>No team</td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
 {% endblock %}
