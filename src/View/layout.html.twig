@@ -1,35 +1,48 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% block title %}{% endblock %}</title>
+		<title>
+			{% block title %}{% endblock %}
+		</title>
 
-    <link rel="stylesheet" href="/assets/css/style.css">
-    {% block stylesheet %}{% endblock %}
-    <link rel="icon" href="/assets/images/favicon.png">
-</head>
+		<link rel="stylesheet" href="/assets/css/style.css"> {% block stylesheet %}{% endblock %}
+		<link rel="icon" href="/assets/images/favicon.png">
+	</head>
 
-<body>
-    <header>
-        <div>Pokedex</div>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/">All trainers</a></li>
-                <li><a href="/auth/login">Login</a></li>
-            </ul>
-        </nav>
-    </header>
-    {% block content %}{% endblock %}
-    {% block javascript %}{% endblock %}
-    <footer>
-        <div>POKEDEX APP</div>
-        <div>Created by: Christian, Remi, Clara and Vanessa.</div>
-    </footer>
-</body>
+	<body>
+		<div class="logo-wrapper">
+			<a href="/"><img class="logo" src="/assets/images/Pokedex.png" alt="pokedex-logo"/></a>
+		</div>
+
+		<div class="topnav" id="myTopnav">
+			<a href="/">Home</a>
+			<a href="/user/list">All Trainers</a>
+			<a href="/auth/login">Login</a>
+			<a href="#logout">Logout</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveMenu()">&#9776;</a>
+		</div>
+
+		{% block content %}{% endblock %}
+		{% block javascript %}{% endblock %}
+		<footer>
+			<div>
+				<p>POKEDEX APP</p>
+				<p>Created by: Christian, Remi, Clara and Vanessa.</p>
+			</div>
+		</footer>
+		<script>
+			function responsiveMenu() {
+var x = document.getElementById("myTopnav");
+if (x.className === "topnav") {
+x.className += " responsive";
+} else {
+x.className = "topnav";
+}
+}
+		</script>
+	</body>
 </html>
-
-
