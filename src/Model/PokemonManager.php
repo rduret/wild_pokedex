@@ -136,11 +136,13 @@ class PokemonManager extends AbstractManager
     /**
      * Update pokemon in database
      */
-/*     public function update(array $item): bool
+    public function updatePokemon($typeId, $attackId, $pokemonId)
     {
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `title` = :title WHERE id=:id");
-        $statement->bindValue('id', $item['id'], \PDO::PARAM_INT);
-        $statement->bindValue('title', $item['title'], \PDO::PARAM_STR);
+        // $statement= $this->pdo>prepare("UPDATE" . )
+        $statement = $this->pdo->prepare("UPDATE" . self::TABLE . "SET (`pokemon_id`, `attack_id`) VALUES (:pokemon_id, :attack_id)");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
 
         return $statement->execute();
-    } */
+    }

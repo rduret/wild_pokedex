@@ -106,31 +106,6 @@ class PokemonController extends AbstractController
                 }
             }
 
-            //Trying to upload file if is set and no errors before
-            if (!isset($_FILES['image']['name']) || $_FILES['image']['name'] == '') {
-                $errors[] = "You need to add an image for this pokemon.";
-            } elseif (empty($errors)) {
-                try {
-                    $file = $_FILES['image'];
-                    if (!in_array(pathinfo($file['name'], PATHINFO_EXTENSION), $allowedMime)) {
-                        throw new Exception("Format file " . $file['name'] . " is not accepted.");
-                    }
-                    if ($file['size'] > $sizeMax) {
-                        throw new Exception("File " . $file['name'] . " is too big : " . $file['size'] . "($sizeMax Octets MAX) ");
-                    }
-                    //Upload le fichier
-                    $file = $_FILES['image'];
-                    $uploadDir = "assets/images/";
-                    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-                    $fileNameUpload = uniqid() . '.' . $extension;
-                    $uploadFile = $uploadDir . $fileNameUpload;
-                    move_uploaded_file($file['tmp_name'], $uploadFile);
-                    $pokemonValues['filePath'] = $uploadFile;
-                } catch (Exception $e) {
-                    $errors[] =  $e->getMessage();
-                }
-            }
-
             //Trying to upload model3d file if is set and no errors before
             if (isset($_FILES['model3d']['name']) && $_FILES['model3d']['name'] !== '' && empty($errors)) {
                 try {
@@ -139,7 +114,7 @@ class PokemonController extends AbstractController
                     if (pathinfo($file['name'], PATHINFO_EXTENSION) !== "glb") {
                         echo pathinfo($file['name'], PATHINFO_EXTENSION);
                         throw new Exception("Format file " . $file['name'] . " is not accepted.");
-                    }   
+                    }
 
                     //Upload le fichier
                     $file = $_FILES['model3d'];
@@ -174,5 +149,20 @@ class PokemonController extends AbstractController
         $_SESSION['dlt_pok_msg'] = $validationMessage;
         header('Location: /Pokemon/list');
         // dans la fonction delete on doit rajouter la suppression du fichier
+    }
+
+    public function update()
+    {
+        if(($_SERVER['REQUEST_METHOD'] === 'POST')){
+            // je veux vérifier di je viens d'un formulaire
+        }
+        if (isset($_SESSION['upt_pok_msg'])) {
+            $modificationMessage = $_SESSION['upt_pok_msg'];
+            /* trouver un moyen de créer une modification sur
+            la valeur de la var courante comme pour unset */
+        $rowCountUpdate = $this->pokemonManager->updatePokemon();
+        $modificationMessage = $rowCountUpdate == 1 ? 'Les modifications ont bien été prises en compte!' : 'erreur!';
+        $_SESSION['upt_pok_msg'] = $modificationMessage;
+        header('Location: /Pokemon/list');
     }
 }
