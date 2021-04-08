@@ -407,14 +407,10 @@ a:hover {
 .trainers-list li {
     list-style: none;
 }
-/* 
-.trainers-list .buttons {
-    display: flex;
-    flex-direction: row;
-} */
 
 .trainers-list .btn {
     background-color: #40b3fd;
+    color: #232323;
 }
 
 .pokemons-container .pokemons-list {
