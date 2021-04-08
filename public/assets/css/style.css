@@ -40,8 +40,6 @@ body{
 }
 
 .container{
-    margin: 50px;
-    margin-bottom: 200px;
 }
 
 a{
@@ -390,6 +388,7 @@ a:hover{
 .pokemons-container .pokemons-list{
     display: flex;
     justify-content: space-around;
+    align-content: space-between;
     flex-wrap: wrap;
 }
 
@@ -403,6 +402,7 @@ a:hover{
     border: rgb(255, 167, 0) solid 2px;
     width: 20%;
     margin: 20px;
+    margin-bottom: 65px;
     background-color: #3e3c39;
     color: #fff;
     border-radius: 5px;
@@ -549,7 +549,6 @@ footer{
     text-align: center;
     background-color: #dc0a2d;
     font-size: 12px;
-    position: fixed;
     bottom: 0;
     width: 100%;
 }
