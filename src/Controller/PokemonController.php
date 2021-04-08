@@ -202,10 +202,9 @@ class PokemonController extends AbstractController
         $attacks = $this->attackManager->selectAll();
         $oldPokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
 
-        var_dump($oldPokemon);
         // first value of pokemon
         if ($oldPokemon) {
-            if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
+            if (($_SERVER['REQUEST_METHOD'] == 'POST')) {
                 // checking if new value 'name' is set
                 if (isset($_POST['name']) && trim($_POST['name']) !== '') {
                     $newPokemon['name'] = $_POST['name'];
@@ -214,9 +213,9 @@ class PokemonController extends AbstractController
                 }
 
                 for ($i = 1; $i <= 2; $i++) {
-                    if ($_POST['type' . $i] == '') {
-                        $newPokemon['types'][] = $oldPokemon['types'][$i-1];
-                    } else {
+                    if ($_POST['type' . $i] == '' && isset($oldPokemon['types'][$i-1])) {
+                        $newPokemon['type'.$i] = $oldPokemon['types'][$i-1]['id'];
+                    } elseif($_POST['type' . $i] !== '') {
                         $type_exist = false;
                         foreach ($types as $type) {
                             if ($type['id'] === $_POST['type' . $i]) {
@@ -226,15 +225,17 @@ class PokemonController extends AbstractController
                         if (!$type_exist) {
                             $errors[] = "Type $i does not exist. Please select a correct value.";
                         } else {
-                            $newPokemon['type' . $i] = $_POST['type' . $i];
+                            $newPokemon['type'.$i] = $_POST['type' . $i];
                         }
+                    } else {
+                        $newPokemon['type'.$i] = "";
                     }
                 }
 
                 for ($i = 1; $i <= 4; $i++) {
-                    if ($_POST['attack' . $i] == '') {
+                    if ($_POST['attack' . $i] == '' && isset($oldPokemon['attacks'][$i-1])) {
                         $newPokemon['attack' . $i] = $oldPokemon['attacks'][$i-1]['id'];
-                    } else {
+                    } elseif($_POST['attack' . $i] !== '') {
                         $attack_exist = false;
                         foreach ($attacks as $attack) {
                             if ($attack['id'] === $_POST['attack' . $i]) {
@@ -246,6 +247,8 @@ class PokemonController extends AbstractController
                         } else {
                             $newPokemon['attack' . $i] = $_POST['attack' . $i];
                         }
+                    } else {
+                        $newPokemon['attack'.$i] = "";
                     }
                 }
     
@@ -272,7 +275,7 @@ class PokemonController extends AbstractController
                             $fileNameUpload = uniqid() . '.' . $extension;
                             $uploadFile = $uploadDir . $fileNameUpload;
                             move_uploaded_file($file['tmp_name'], $uploadFile);
-                            $newPokemon['filePath'] = '/' . $uploadFile;
+                            $newPokemon['image'] = '/' . $uploadFile;
                         } catch (Exception $e) {
                             $errors[] =  $e->getMessage();
                         }
@@ -306,15 +309,15 @@ class PokemonController extends AbstractController
                         } catch (Exception $e) {
                             $errors[] =  $e->getMessage();
                         }
-                    }
-                    if (!empty($errors)) {
-                        return $this->twig->render('Pokemon/update.html.twig', ['errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
-                    } else {
-                        $id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
-                        header('Location: /pokemon/details/' . $id);
-                    }
+                    }  
                 } else {
                     $newPokemon['model3d'] = $oldPokemon['model3d'];
+                }
+                if (!empty($errors)) {
+                    return $this->twig->render('Pokemon/update.html.twig', ['errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
+                } else {
+                    $id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
+                    header('Location: /pokemon/details/' . $id);
                 }
             }
             return $this->twig->render('Pokemon/update.html.twig', ['types' => $types, 'attacks' => $attacks]);
