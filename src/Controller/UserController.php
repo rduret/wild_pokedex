@@ -49,8 +49,6 @@ class UserController extends AbstractController
             }
             $trainers[$index] = $trainer;
         }
-        // var_dump($trainers);
-        // exit();
         return $this->twig->render('Trainers/list.html.twig', ['trainers' => $trainers, 'session' => $_SESSION]);
     }
 
@@ -87,7 +85,7 @@ class UserController extends AbstractController
     {
         //Get the team_id from a user id (returns an array, but we expect only one element)
         $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
-        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();//Get the pokemons in DB
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes(); //Get the pokemons in DB
         $teamId = null;
         $errors = [];
 
