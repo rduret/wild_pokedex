@@ -320,13 +320,13 @@ class PokemonController extends AbstractController
                     $newPokemon['model3d'] = $oldPokemon['model3d'];
                 }
                 if (!empty($errors)) {
-                    return $this->twig->render('Pokemon/update.html.twig', ['errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
+                    return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
                 } else {
                     $id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
                     header('Location: /pokemon/details/' . $id);
                 }
             }
-            return $this->twig->render('Pokemon/update.html.twig', ['types' => $types, 'attacks' => $attacks]);
+            return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'types' => $types, 'attacks' => $attacks]);
         } else {
             header('Location: /');
         }
