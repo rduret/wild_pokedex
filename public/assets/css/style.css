@@ -393,6 +393,10 @@ a:hover {
     color: #fff;
 }
 
+.pokemons-container h2{
+    display: inline-block;
+}
+
 .trainers-list {
     padding: 10px;
     display: flex;
@@ -415,23 +419,34 @@ a:hover {
     color: #232323;
 }
 
-.pokemons-container .pokemons-list {
+.pokemons-container .pokemons-list{
     display: flex;
     justify-content: space-around;
     align-content: space-between;
     flex-wrap: wrap;
 }
 
+.pokemons-container .pokemons-list .pokemon-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+    margin: 20px;
+    margin-bottom: 65px;
+}
+
+.pokemons-container .pokemons-list .pokemon-box .btn{
+    margin-top: 20px;
+}
+
 .pokemons-container a.pokemon {
     display: flex;
+    height: 100%;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
     text-decoration: none;
     border: rgb(255, 167, 0) solid 2px;
-    width: 20%;
-    margin: 20px;
-    margin-bottom: 65px;
     background-color: #3e3c39;
     color: #fff;
     border-radius: 5px;
@@ -456,9 +471,18 @@ a:hover {
     text-transform: capitalize;
 }
 
+.pokemons-container .btn-admin {
+    text-align: center;
+}
+
+.pokemons-container .btn-admin a{
+    margin: auto;
+}
+
+
 @media only screen and (max-width: 600px) {
-    .pokemons-container a.pokemon {
-        width: 60%;
+    .pokemons-container .pokemons-list .pokemon-box {
+        width: 50%;
     }
 }
 
