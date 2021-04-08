@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Model\PokemonManager;
+use App\Model\UserManager;
 
 class HomeController extends AbstractController
 {
@@ -23,16 +24,19 @@ class HomeController extends AbstractController
      */
 
     private PokemonManager $pokemonManager;
+    private UserManager $userManager;
 
     public function __construct()
     {
         parent::__construct();
         $this->pokemonManager = new PokemonManager;
+        $this->userManager = new UserManager;
     }
 
     public function index()
     {
+        $trainers = $this->userManager->selectSomeUsers();
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Home/index.html.twig', ['pokemons' => $pokemons, 'session' => $_SESSION]);
+        return $this->twig->render('Home/index.html.twig', ['pokemons' => $pokemons, 'session' => $_SESSION, 'trainers' => $trainers]);
     }
 }
