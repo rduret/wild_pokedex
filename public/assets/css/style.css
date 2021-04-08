@@ -139,12 +139,12 @@ a:hover {
 }
 
 .dropdown:hover .dropdown-content {
-    display: block;
+  display: block;
 }
 
 @media screen and (max-width: 600px) {
     .container {
-        margin: 25px;
+        margin: 15px;
     }
     #login-title {
         font-size: 18px;
@@ -203,12 +203,11 @@ a:hover {
     margin-top: 25px;
 }
 
-.trainer-list th,
-.trainer-list td {
-    text-align: left;
-    padding: 8px;
-    width: 50%;
-    border: 2px solid #232323;
+.trainer-list th, .trainer-list td{
+  text-align: left;
+  padding: 8px;
+  width: 45%;
+  border:2px solid #232323;
 }
 
 .trainer-list th {

@@ -11,12 +11,22 @@
 		<div style="overflow-x:auto;">
 			<table class="trainer-list">
 				<tr>
+					{% if session['userRole'] == "admin" %}
+						<th style="width:5%; text-align:center"></th>
+					{% endif %}
+
 					<th>Trainer name</th>
 					<th>Team</th>
 				</tr>
 				{% for trainer in trainers %}
 					<tr>
-						<td>{{trainer.name}}</td>
+						{% if session['userRole'] == "admin" %}
+							<td style="width:5%;text-align:center">
+								<a class="btn btn-delete" title="Delete trainer and team" href="/user/delete/{{trainer.id}}">X</a>
+							</td>
+						{% endif %}
+						<td>
+							{{trainer.name}}</td>
 						<td>
 							{% for pokemon in trainer.pokemons %}
 								{{pokemon}}
