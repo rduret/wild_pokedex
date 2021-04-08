@@ -59,4 +59,10 @@ class UserManager extends AbstractManager
         return $statement->fetchAll();
     }
 
+    public function selectSomeUsers()
+    {
+        $statement = $this->pdo->prepare("SELECT name FROM " . static::TABLE . " WHERE role_id = 2  LIMIT 5");
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 }

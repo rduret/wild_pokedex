@@ -13,7 +13,6 @@ use App\Model\PokemonManager;
 use App\Model\UserManager;
 use App\Model\TeamManager;
 
-
 class HomeController extends AbstractController
 {
     /**
@@ -40,6 +39,9 @@ class HomeController extends AbstractController
 
     public function index()
     {
+        $trainers = $this->userManager->selectSomeUsers();
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
+        return $this->twig->render('Home/index.html.twig', ['pokemons' => $pokemons, 'session' => $_SESSION, 'trainers' => $trainers]);
         $pokemonsId = "";
         if (isset($_SESSION['userId'])) {
             $pokemonsId = $this->listPokemonTeamByUser();
