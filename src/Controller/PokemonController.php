@@ -47,7 +47,7 @@ class PokemonController extends AbstractController
     public function details(int $id): string
     {
         $pokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
-        return $this->twig->render('Pokemon/details.html.twig', ['pokemon' => $pokemon]);
+        return $this->twig->render('Pokemon/details.html.twig', ['pokemon' => $pokemon, 'session' => $_SESSION]);
     }
 
     /**
