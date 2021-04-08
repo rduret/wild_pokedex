@@ -194,6 +194,8 @@ a:hover {
         width: 100%;
         text-align: left;
     }
+
+
 }
 /************* Trainer list page ******************/
 .trainer-list {
@@ -397,6 +399,7 @@ a:hover {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .trainers-list ul {
@@ -454,11 +457,17 @@ a:hover {
     text-transform: capitalize;
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 600px) {
     .pokemons-container a.pokemon {
-        width: 40%;
+        width: 60%;
     }
 }
+
+/* @media only screen and (max-width: 1000px) {
+    .users-container .trainers-list {
+        flex-direction: column;
+    }
+} */
 
 /******************************** DETAILS ******************************/
 
