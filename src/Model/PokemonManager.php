@@ -141,13 +141,22 @@ class PokemonManager extends AbstractManager
         // returns lines which have been affected by an INSERT, UPDATE or DELETE
         return $statement->rowCount();
     }
-    /*
+
+
+    public function selectPokemonNameById(int $id)
+    {
+        $statement = $this->pdo->prepare("SELECT name FROM " . static::TABLE . " WHERE id = :id");
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+     /**
      * Update pokemon in database
      */
     public function updatePokemon($newPokemon, $oldPokemon)
     {
-/*         var_dump($oldPokemon);
-        var_dump($newPokemon); */
         $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET name = :name, image = :image, model3d = :model3d WHERE id = :id");
         $statement->bindValue('name', $newPokemon['name'], \PDO::PARAM_STR);
         $statement->bindValue('image', $newPokemon['image'], \PDO::PARAM_STR);

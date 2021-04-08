@@ -37,7 +37,7 @@ class PokemonController extends AbstractController
             // is empty if you are not coming from the delete function
         }
 
-        return $this->twig->render('Pokemon/list.html.twig', ['pokemons' => $pokemons, 'validationMessage' => $validationMessage]);
+        return $this->twig->render('Pokemon/onlyListPokemon.html.twig', ['pokemons' => $pokemons, 'validationMessage' => $validationMessage]);
         // display the $validationMessage var in render if it exists
     }
 

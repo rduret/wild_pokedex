@@ -22,17 +22,17 @@ class HomeController extends AbstractController
      * @throws \Twig\Error\SyntaxError
      */
 
-     private PokemonManager $pokemonManager;
+    private PokemonManager $pokemonManager;
 
     public function __construct()
     {
         parent::__construct();
         $this->pokemonManager = new PokemonManager;
     }
-    
+
     public function index()
     {
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Home/index.html.twig',['pokemons' => $pokemons]);
+        return $this->twig->render('Home/index.html.twig', ['pokemons' => $pokemons, 'session' => $_SESSION]);
     }
 }
