@@ -51,7 +51,7 @@ class UserController extends AbstractController
         }
         // var_dump($trainers);
         // exit();
-        return $this->twig->render('Trainers/list.html.twig', ['trainers' => $trainers]);
+        return $this->twig->render('Trainers/list.html.twig', ['trainers' => $trainers, 'session' => $_SESSION]);
     }
 
     /**
