@@ -17,18 +17,15 @@
 				{% for trainer in trainers %}
 					<tr>
 						<td>{{trainer.name}}</td>
-						{% if trainer.team_id != null %}
-							<td>
+						<td>
 							{% for pokemon in trainer.pokemons %}
-							{{pokemon}}
+								{{pokemon}}
+							{% else %}
+								No team
 							{% endfor %}
-							</td>
-						{% else %}
-							<td>No team</td>
-						{% endif %}
+						</td>
 					</tr>
 				{% endfor %}
-
 			</table>
 		</div>
 	</div>

@@ -1,0 +1,22 @@
+{% if session.username is defined %}
+	<div class="pokemons-container">
+		<h2>My Pokemon Team:</h2>
+		<div class="pokemons-list">
+			{% for pokemon in pokemons %}
+				{% for pokemonId in pokemonsId %}
+					{% if pokemon.id == pokemonId %}
+						<a href="/pokemon/details/{{pokemon.id}}" class="pokemon" style="background-color: #ffa6009c;">
+							<img src="{{ pokemon.image }}"/>
+							<div class="description">
+								<p class="name">{{pokemon.name}}</p>
+								{% for type in pokemon.types %}
+									<p class="type {{type.name}}">{{type.name}}</p>
+								{% endfor %}
+							</div>
+						</a>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}
