@@ -25,6 +25,8 @@ class UserController extends AbstractController
      */
     public function list()
     {
+        $this->checkLogin();
+
         $trainers = $this->userManager->selectByRole(2);
         $pokemonsInTeam = [];
 
@@ -35,8 +37,6 @@ class UserController extends AbstractController
             $teamId = $trainer['team_id'];
             //Store pokemon_id from each pokemon in team
             $pokemonsInTeam = $this->listPokemonTeam($teamId);
-
-
 
             //Loop on pokemons in team to store their names into $trainers
             foreach ($pokemonsInTeam as $key => $pokemon) {
@@ -49,8 +49,6 @@ class UserController extends AbstractController
             }
             $trainers[$index] = $trainer;
         }
-        // var_dump($trainers);
-        // exit();
         return $this->twig->render('Trainers/list.html.twig', ['trainers' => $trainers, 'session' => $_SESSION]);
     }
 
@@ -76,6 +74,8 @@ class UserController extends AbstractController
      */
     public function listTeams()
     {
+        $this->checkLogin();
+
         $teams = $this->teamManager->selectAll();
     }
 
@@ -85,6 +85,8 @@ class UserController extends AbstractController
 
     public function addPokemon($pokemonId)
     {
+        $this->checkLogin();
+
         //Get the team_id from a user id (returns an array, but we expect only one element)
         $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();//Get the pokemons in DB
@@ -124,6 +126,8 @@ class UserController extends AbstractController
 
     public function deletePokemon($pokemonId)
     {
+        $this->checkLogin();
+
         //Get the team_id from a user id (returns an array, but we expect only one element)
         $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
         $teamId = null;
@@ -149,6 +153,19 @@ class UserController extends AbstractController
      */
     public function listPokemonTeam(int $teamId)
     {
+        $this->checkLogin();
+
         return $this->teamManager->selectPokemonsInTeam($teamId);
+    }
+
+    /**
+     * Check if the user is logged in
+     */
+    private function checkLogin()
+    {
+        //Redirect to LOGIN if we are not logged in
+        if (!isset($_SESSION['username'])) {
+            header('Location: /Auth/login');
+        }
     }
 }

@@ -55,6 +55,8 @@ class PokemonController extends AbstractController
      */
     public function add()
     {
+        $this->checkLogin();
+
         $types = $this->typeManager->selectAll();
         $attacks = $this->attackManager->selectAll();
 
@@ -170,6 +172,8 @@ class PokemonController extends AbstractController
 
     public function delete(int $id)
     {
+        $this->checkLogin();
+        
         //Delete Files attached to the pokemon
         $pokemon = $this->pokemonManager->selectOneById($id);
         $pathImage = substr($pokemon['image'], 1);
@@ -183,7 +187,7 @@ class PokemonController extends AbstractController
             unlink($pathModel);
         }
 
-         // Getting the rowCount value which is returned at the end of deletePokemonFromList function
+        // Getting the rowCount value which is returned at the end of deletePokemonFromList function
         $rowCount = $this->pokemonManager->deletePokemonFromList($id);
         $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de la liste!' : 'erreur!';
         $_SESSION['dlt_pok_msg'] = $validationMessage;
@@ -194,6 +198,8 @@ class PokemonController extends AbstractController
 
     public function update($id)
     {
+        $this->checkLogin();
+        
         $allowedMime = ['jpg', 'jpeg', 'png' ];
         $sizeMax = 2000000;
         $newPokemon = [];
@@ -215,7 +221,7 @@ class PokemonController extends AbstractController
                 for ($i = 1; $i <= 2; $i++) {
                     if ($_POST['type' . $i] == '' && isset($oldPokemon['types'][$i-1])) {
                         $newPokemon['type'.$i] = $oldPokemon['types'][$i-1]['id'];
-                    } elseif($_POST['type' . $i] !== '') {
+                    } elseif ($_POST['type' . $i] !== '') {
                         $type_exist = false;
                         foreach ($types as $type) {
                             if ($type['id'] === $_POST['type' . $i]) {
@@ -235,7 +241,7 @@ class PokemonController extends AbstractController
                 for ($i = 1; $i <= 4; $i++) {
                     if ($_POST['attack' . $i] == '' && isset($oldPokemon['attacks'][$i-1])) {
                         $newPokemon['attack' . $i] = $oldPokemon['attacks'][$i-1]['id'];
-                    } elseif($_POST['attack' . $i] !== '') {
+                    } elseif ($_POST['attack' . $i] !== '') {
                         $attack_exist = false;
                         foreach ($attacks as $attack) {
                             if ($attack['id'] === $_POST['attack' . $i]) {
@@ -309,7 +315,7 @@ class PokemonController extends AbstractController
                         } catch (Exception $e) {
                             $errors[] =  $e->getMessage();
                         }
-                    }  
+                    }
                 } else {
                     $newPokemon['model3d'] = $oldPokemon['model3d'];
                 }
@@ -322,6 +328,17 @@ class PokemonController extends AbstractController
             }
             return $this->twig->render('Pokemon/update.html.twig', ['types' => $types, 'attacks' => $attacks]);
         } else {
+            header('Location: /');
+        }
+    }
+
+    /**
+     * Check if the user is logged in as admin
+     */
+    private function checkLogin()
+    {
+        //Redirect to HOME if we are not logged in as admin
+        if (!($_SESSION['userRole'] === 'admin')) {
             header('Location: /');
         }
     }
