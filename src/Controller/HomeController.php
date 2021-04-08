@@ -39,15 +39,31 @@ class HomeController extends AbstractController
 
     public function index()
     {
+        $messages = [];
+        if(isset($_SESSION['add_pokTeam_msg']) && $_SESSION['add_pokTeam_msg'] !== ""){
+            $messages = $_SESSION['add_pokTeam_msg'];
+            unset($_SESSION['add_pokTeam_msg']);
+        }
+        if(isset($_SESSION['dlt_pokTeam_msg']) && $_SESSION['dlt_pokTeam_msg'] !== ""){
+            $messages = $_SESSION['dlt_pokTeam_msg'];
+            unset($_SESSION['dlt_pokTeam_msg']);
+        }
+
+
         $trainers = $this->userManager->selectSomeUsers();
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Home/index.html.twig', ['pokemons' => $pokemons, 'session' => $_SESSION, 'trainers' => $trainers]);
         $pokemonsId = "";
+
         if (isset($_SESSION['userId'])) {
             $pokemonsId = $this->listPokemonTeamByUser();
         }
         $pokemons = $this->pokemonManager->selectAllWithAttackTypes();
-        return $this->twig->render('Home/index.html.twig', ['pokemons' => $pokemons, 'session' => $_SESSION, 'pokemonsId' => $pokemonsId]);
+        return $this->twig->render('Home/index.html.twig', [
+            'pokemons' => $pokemons, 
+            'session' => $_SESSION, 
+            'pokemonsId' => $pokemonsId,
+            'trainers' => $trainers,
+            'messages' => $messages]);
     }
 
     /**
@@ -56,21 +72,19 @@ class HomeController extends AbstractController
     public function listPokemonTeamByUser()
     {
         //Get the team_id from a user id (returns an array, but we expect only one element)
-        $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
-        $teamId = null;
+        $teamId= intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
         $errors = [];
         $pokemonsId = [];
 
-        if ($teamIdRequest[0]) {
-            $teamId = intval($teamIdRequest[0]['team_id']); //Convert the string value stored in $_SESSION to int
+        if ($teamId) {
+            $pokemonsInTeam = $this->teamManager->selectPokemonsInTeam($teamId);
+            foreach ($pokemonsInTeam as $pokemonsArray) {
+                foreach ($pokemonsArray as $pokemon) {
+                    array_push($pokemonsId, $pokemon);
+                }
+            }
         } else {
             $errors[] = "The selected team does not exist. Please select a correct value.";
-        }
-        $pokemonsInTeam = $this->teamManager->selectPokemonsInTeam($teamId);
-        foreach ($pokemonsInTeam as $pokemonsArray) {
-            foreach ($pokemonsArray as $pokemon) {
-                array_push($pokemonsId, $pokemon);
-            }
         }
         return $pokemonsId;
     }

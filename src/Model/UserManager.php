@@ -56,7 +56,7 @@ class UserManager extends AbstractManager
         $statement = $this->pdo->prepare("SELECT team_id FROM " . static::TABLE . " WHERE id =:userId");
         $statement->bindValue('userId', $userId, \PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetchAll();
+        return $statement->fetch();
     }
 
     public function selectSomeUsers()

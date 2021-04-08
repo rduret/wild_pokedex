@@ -83,7 +83,7 @@ class UserController extends AbstractController
      * Add a pokemon to a team
      */
 
-    public function addPokemon($pokemonId)
+/*     public function addPokemon($pokemonId)
     {
         $this->checkLogin();
 
@@ -118,6 +118,41 @@ class UserController extends AbstractController
                 echo $error;
             }
         }
+    } */
+
+    public function addPokemon($pokemonId){
+        $messages = [];
+        $teamId = intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes(); //Get the pokemons in DB
+        $nbPokemons = intval($this->teamManager->countPokemonsInTeam($teamId));
+
+        if(isset($teamId)){
+            foreach ($pokemons as $pokemon) {
+                if ($pokemon['id'] === $pokemonId) {
+                    $pokemonName = $pokemon['name'];
+                    $pokemonExist = true;
+                }
+            }
+            if(!$pokemonExist){
+                $messages[] = "The selected pokemon does not exist. Please select a correct value.";
+            }
+        } else {
+            $messages[] = "The selected team does not exist.";
+        }
+
+        if ($nbPokemons < 6) {
+            if (empty($messages)) {
+                $rowCount = $this->teamManager->addPokemonToTeam($pokemonId, $teamId);
+                $messages[] = $rowCount == 1 ? $pokemonName . ' has been added to your team !' : 'An error has occured!';
+                $_SESSION['add_pokTeam_msg'] = $messages;
+                header('Location: /');
+            }
+        }
+        else{
+            $messages[] = "Team is full, please delete a pokemon first";
+            $_SESSION['add_pokTeam_msg'] = $messages;
+            header('Location: /');   
+        }
     }
 
     /**
@@ -129,23 +164,37 @@ class UserController extends AbstractController
         $this->checkLogin();
 
         //Get the team_id from a user id (returns an array, but we expect only one element)
-        $teamIdRequest = $this->userManager->selectTeamIdByUserId($_SESSION['userId']);
-        $teamId = null;
-        $errors = [];
+        $teamId = intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
+        $pokemons = $this->pokemonManager->selectAllWithAttackTypes(); //Get the pokemons in DB
+        $messages = [];
 
-        if ($teamIdRequest[0]) {
-            $teamId = intval($teamIdRequest[0]); //Convert the string value stored in $_SESSION to int
+        if (isset($teamId)){
+            foreach ($pokemons as $pokemon) {
+                if ($pokemon['id'] === $pokemonId) {
+                    $pokemonName = $pokemon['name'];
+                    $pokemonExist = true;
+                }
+            }
+            if(!$pokemonExist){
+                $messages[] = "The selected pokemon does not exist in your team. Please select a correct value.";
+            }
         } else {
-            $errors[] = "The selected team does not exist. Please select a correct value.";
+            $messages[] = "The selected team does not exist. Please select a correct value.";
         }
 
-        // Getting the rowCount value which is returned at the end of deletePokemonFromTeam function
-        $rowCount = $this->teamManager->deletePokemonFromTeam($pokemonId, $teamId);
-        $validationMessage = $rowCount == 1 ? 'Le pokémon a bien été retiré de l\'équipe!' : 'erreur!';
-        // créer une variable de session $_SESSION['dlt_pokTeam_msg']
-        $_SESSION['dlt_pokTeam_msg'] = $validationMessage;
-        header('Location: /Pokemon/list');
-        //
+
+
+        if(empty($messages)){
+            // Getting the rowCount value which is returned at the end of deletePokemonFromTeam function
+            $rowCount = $this->teamManager->deletePokemonFromTeam($pokemonId, $teamId);
+            $messages[] = $rowCount == 1 ? $pokemonName . ' has been removed from the team' : 'An error has occured';
+            $_SESSION['dlt_pokTeam_msg'] = $messages;
+            header('Location: /');
+        }
+        else{
+            $_SESSION['dlt_pokTeam_msg'] = $messages;
+            header('Location: /');
+        }
     }
 
     /**
