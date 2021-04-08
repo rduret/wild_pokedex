@@ -19,9 +19,20 @@ var createScene = function () {
   camera.attachControl(canvas, true);
   camera.minZ = 0.1;
   camera.wheelDeltaPercentage = 0.01;
-  camera.upperRadiusLimit = 50;
-  camera.lowerRadiusLimit = 1;
+  camera.upperRadiusLimit = 10;
+  camera.lowerRadiusLimit = 2;
   camera._panningMouseButton = 1;
+
+ // Create a 'sphere' to use as camera target
+ var sphere = BABYLON.MeshBuilder.CreateSphere(
+  "sphere",
+  { diameter: 0.01, segments: 4 },
+  scene
+);
+// Move the sphere upward
+sphere.position.y = 1;
+//Set camera target
+camera.target = sphere.absolutePosition;
 
   /**
    * ASYNC/AWAIT Function to load a model into the scene
@@ -58,7 +69,7 @@ var createScene = function () {
     groundSize: 5,
     groundColor: BABYLON.Color3.White(),
     enableGroundShadow: true,
-    groundYBias: 10,
+    groundYBias: 1,
   });
 
   //Lights
