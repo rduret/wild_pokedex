@@ -58,10 +58,10 @@ var createScene = function () {
   var env = scene.createDefaultEnvironment({
     createSkybox: true,
     skyboxSize: 150,
-    skyboxColor: BABYLON.Color3.White(),
+    skyboxColor: new BABYLON.Color3(0.0375,0.0375,0.0375),
     createGround: true,
-    groundSize: 5,
-    groundColor: BABYLON.Color3.White(),
+    groundSize: 0,
+    groundColor: new BABYLON.Color3(0.037,0.037,0.037),
     enableGroundShadow: true,
     groundYBias: 1,
   });
