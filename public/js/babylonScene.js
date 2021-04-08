@@ -21,18 +21,18 @@ var createScene = function () {
   camera.wheelDeltaPercentage = 0.01;
   camera.upperRadiusLimit = 10;
   camera.lowerRadiusLimit = 2;
-  camera._panningMouseButton = 1;
+  camera._panningMouseButton = null;
 
- // Create a 'sphere' to use as camera target
- var sphere = BABYLON.MeshBuilder.CreateSphere(
-  "sphere",
-  { diameter: 0.01, segments: 4 },
-  scene
-);
-// Move the sphere upward
-sphere.position.y = 1;
-//Set camera target
-camera.target = sphere.absolutePosition;
+  // Create a 'sphere' to use as camera target
+  var sphere = BABYLON.MeshBuilder.CreateSphere(
+    "sphere",
+    { diameter: 0.01, segments: 4 },
+    scene
+  );
+  // Move the sphere upward
+  sphere.position.y = 1;
+  //Set camera target
+  camera.target = sphere.absolutePosition;
 
   /**
    * ASYNC/AWAIT Function to load a model into the scene
@@ -90,6 +90,12 @@ camera.target = sphere.absolutePosition;
   //Shadows
   var shadowGenerator = new BABYLON.ShadowGenerator(2048, dLight);
   shadowGenerator.useBlurExponentialShadowMap = true;
+
+  // Code in this function will run ~60 times per second
+  scene.registerBeforeRender(function () {
+    //Slowly rotate camera
+    camera.alpha += 0.002;
+  });
 
   return scene;
 };
