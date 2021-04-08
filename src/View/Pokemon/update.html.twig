@@ -3,8 +3,8 @@
 {% block title %} Update your pokemon {% endblock %}
 
 {% block content %}
-    <h2>Update your pokémon</h2>
-    <form style="display: flex; flex-direction: column;" action="" method="POST" enctype="multipart/form-data">
+    <h2>Update your pokemon</h2>
+    <form class="pokemon_form" action="" method="POST" enctype="multipart/form-data">
         <label for="name">Name</label>
         <input type="text" name="name" id="name"/>
 
@@ -34,8 +34,10 @@
         </select>
         {% endfor %}
 
-        <input type="submit" value="Add"/>
-        <a href="">Cancel</a>
+        <div class="buttons">
+            <button class="btn btn-add" type="submit"/>Update</button>
+            <a class="btn btn-cancel" href="/pokemon/update/">Cancel</a>
+        </div>
 
         {% for error in errors %}
             <p>{{error}}</p>
