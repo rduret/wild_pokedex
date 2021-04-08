@@ -7,7 +7,7 @@
             <div class="description">
                 <p class="name">{{pokemon.name}}</p>
                 {% for type in pokemon.types %}
-                    <p class="type {{type}}">{{type}}</p>
+                    <p class="type {{type.name}}">{{type.name}}</p>
                 {% endfor %}
             </div>
         </a>
