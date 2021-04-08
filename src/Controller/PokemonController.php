@@ -338,7 +338,9 @@ class PokemonController extends AbstractController
     private function checkLogin()
     {
         //Redirect to HOME if we are not logged in as admin
-        if (!($_SESSION['userRole'] === 'admin')) {
+        if (!isset($_SESSION['userRole'])) {
+            header('Location: /');
+        } elseif ($_SESSION['userRole'] != 'admin') {
             header('Location: /');
         }
     }
