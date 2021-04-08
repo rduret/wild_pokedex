@@ -9,7 +9,7 @@ class PokemonManager extends AbstractManager
     /**
      * Insert new pokemon in database
      */
-    public function insert(array $pokemonValues) //: int
+    public function insert(array $pokemonValues): int
     {
         //Add pokemon into pokemon table
         $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`name`, `image`, `model3d`) VALUES (:name, :image, :model3d)");
