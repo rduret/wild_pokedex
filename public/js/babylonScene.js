@@ -6,17 +6,16 @@ const fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
 
 //Scene and camera
 var createScene = function () {
-  const cameraRadius = 5;
   var scene = new BABYLON.Scene(engine);
   var camera = new BABYLON.ArcRotateCamera(
     "Camera",
     Math.PI / 3,
-    Math.PI / 2.7,
-    3,
+    Math.PI / 2,
+    3.5,
     new BABYLON.Vector3(0, 0.5, 0),
     scene
   );
-  camera.attachControl(canvas, true);
+  camera.attachControl(canvas, false);
   camera.minZ = 0.1;
   camera.wheelDeltaPercentage = 0.01;
   camera.upperRadiusLimit = 10;
@@ -51,11 +50,6 @@ var createScene = function () {
       shadowGenerator.addShadowCaster(element, true)
     );
 
-    //Get the model's Y bounding size to adapt camera view
-    var modelSize = model.meshes[1].getBoundingInfo().boundingBox.extendSize.y;
-
-    //Adjust camera radius to the model's size
-    camera.radius = modelSize * cameraRadius;
   }
 
   loadMeshes("", "/assets/models/", fileName);
