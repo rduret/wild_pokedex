@@ -565,6 +565,9 @@ footer {
 /***************** MEDIA QUERY ******************/
 
 @media screen and (max-width: 600px) {
+    table.trainer-list {
+        font-size: 10px;
+    }
     .users-container{
         margin-left:-25px;
         margin-right:-25px;
