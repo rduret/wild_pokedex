@@ -54,21 +54,47 @@ class PokemonController extends AbstractController
         $pokemonsId = [];
 
         $pokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
-        if(isset($_SESSION['userId'])){
-            $teamId= intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
+        if (isset($_SESSION['userId'])) {
+            $teamId = intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
             $teamPokemonsId = $this->teamManager->selectPokemonsInTeam($teamId);
-            foreach($teamPokemonsId as $pokemonId){
+            foreach ($teamPokemonsId as $pokemonId) {
                 $pokemonsId[] = $pokemonId['pokemon_id'];
             }
         }
 
-        return $this->twig->render('Pokemon/details.html.twig', [
-            'pokemon' => $pokemon, 
-            'session' => $_SESSION,
-            'pokemonsId' => $pokemonsId]
+        return $this->twig->render(
+            'Pokemon/details.html.twig',
+            [
+                'pokemon' => $pokemon,
+                'session' => $_SESSION,
+                'pokemonsId' => $pokemonsId
+            ]
         );
     }
 
+
+    /**
+     * Get list of pokemons for a trainer team
+     */
+    public function listPokemonTeamByUser()
+    {
+        //Get the team_id from a user id (returns an array, but we expect only one element)
+        $teamId = intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
+        $errors = [];
+        $pokemonsId = [];
+
+        if ($teamId) {
+            $pokemonsInTeam = $this->teamManager->selectPokemonsInTeam($teamId);
+            foreach ($pokemonsInTeam as $pokemonsArray) {
+                foreach ($pokemonsArray as $pokemon) {
+                    array_push($pokemonsId, $pokemon);
+                }
+            }
+        } else {
+            $errors[] = "The selected team does not exist. Please select a correct value.";
+        }
+        return $pokemonsId;
+    }
 
     /**
      * Add a pokemon
@@ -84,7 +110,7 @@ class PokemonController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $pokemonValues = [];
-            $allowedMime = ['jpg', 'jpeg', 'png' ];
+            $allowedMime = ['jpg', 'jpeg', 'png'];
             $sizeMax = 2000000;
 
             //Checking if name is set and not too long
@@ -178,7 +204,7 @@ class PokemonController extends AbstractController
 
             //if errors
             if (!empty($errors)) {
-                return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks, 'errors' => $errors]);
+                return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks, 'errors' => $errors, 'session' => $_SESSION]);
             } else {
                 // else if validation is ok, upload file then insert and redirect
                 $id = $this->pokemonManager->insert($pokemonValues);
@@ -186,14 +212,14 @@ class PokemonController extends AbstractController
             }
         }
         //else we show the form
-        return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks]);
+        return $this->twig->render('Pokemon/add.html.twig', ['types' => $types, 'attacks' => $attacks, 'session' => $_SESSION]);
     }
 
 
     public function delete(int $id)
     {
         $this->checkLogin();
-        
+
         //Delete Files attached to the pokemon
         $pokemon = $this->pokemonManager->selectOneById($id);
         $pathImage = substr($pokemon['image'], 1);
@@ -232,8 +258,8 @@ class PokemonController extends AbstractController
     public function update($id)
     {
         $this->checkLogin();
-        
-        $allowedMime = ['jpg', 'jpeg', 'png' ];
+
+        $allowedMime = ['jpg', 'jpeg', 'png'];
         $sizeMax = 2000000;
         $newPokemon = [];
         $errors = [];
@@ -299,7 +325,7 @@ class PokemonController extends AbstractController
                         }
                     }
                 }
-    
+
                 // same for image
                 if (isset($_FILES['image']['name']) && $_FILES['image']['name'] !== '') {
                     if (empty($errors)) {

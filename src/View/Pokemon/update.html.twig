@@ -1,9 +1,12 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %} Update your pokemon {% endblock %}
+{% block title %}
+	Update your pokemon
+{% endblock %}
 
 {% block content %}
     <h2>Update your pokemon</h2>
+    <img class="poke-gif" src="https://cdn.statically.io/img/i.pinimg.com/originals/b8/83/fc/b883fc84b57235e6fe57f409716ae68d.gif" alt="pokemon gif"/>
     <form class="pokemon_form" action="" method="POST" enctype="multipart/form-data">
         <label for="name">Name</label>
         <input type="text" name="name" id="name" placeholder="{{pokemon.name}}"/>

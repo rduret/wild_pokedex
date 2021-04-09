@@ -18,7 +18,7 @@
 
 	<body>
 		<div class="logo-wrapper">
-			<a href="/"><img class="logo" src="/assets/resources/Pokedex.png" alt="pokedex-logo"/></a>
+			<a href="/"><img class="logo" src="/assets/resources/pokéwild.png" alt="pokedex-logo"/></a>
 		</div>
 
 		<div class="topnav" id="myTopnav">
@@ -31,19 +31,16 @@
 			{% endif %}
 			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="responsiveMenu()">&#9776;</a>
 		</div>
-		
-		<div class="container">
-			{% block content %}{% endblock %}
-		</div>
-		{% block javascript %}{% endblock %}
-		<footer>
-			<div>
+
+		<div class="container"> {% block content %}{% endblock %}
+			</div>
+			{% block javascript %}{% endblock %}
+			<footer>
 				<p>POKEDEX APP</p>
 				<p>Created by: Christian, Remi, Clara and Vanessa.</p>
-			</div>
-		</footer>
-		<script>
-			function responsiveMenu() {
+			</footer>
+			<script>
+				function responsiveMenu() {
 var x = document.getElementById("myTopnav");
 if (x.className === "topnav") {
 x.className += " responsive";
@@ -51,6 +48,7 @@ x.className += " responsive";
 x.className = "topnav";
 }
 }
-		</script>
-	</body>
-</html></body></html></body></html>
+			</script>
+		</body>
+	</html>
+</body></html></body></html>
