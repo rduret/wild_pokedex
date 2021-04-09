@@ -2,6 +2,7 @@
     <div class="pokemons-container">
         <h2>My Pokemon Team:</h2>
         <div class="pokemons-list">
+        <div class="pokemon-display">
         {% if pokemonsId is empty %}
         Your team is currently empty. Let's start to add some pokemons!
         {% else %}
@@ -30,6 +31,7 @@
                 {% endfor %}
             {% endfor %}
         {% endif %}
+        </div>
         </div>
     </div>
 {% endif %}
