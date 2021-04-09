@@ -325,7 +325,7 @@ h2{
     background-size: cover;
     height: 60vh;
     padding: 50px;
-    margin: -50px;
+    margin: -50px -50px -120px -50px;
 }
 
 .login-submit {
@@ -585,7 +585,7 @@ footer {
         width: 50%;
     }
     .login-background {
-        margin: -15px;
+        margin: -25px -25px -120px -25px;
     }
     .container {
         margin: 25px;
