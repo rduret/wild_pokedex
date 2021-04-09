@@ -48,7 +48,16 @@ a:hover {
     color: rgb(255, 167, 0);
 }
 
-/* NavBar */
+.container{
+    margin: 50px;
+}
+
+h2{
+    padding-top: 50px;
+    padding-bottom: 25px;
+}
+
+/***** NavBar ******/
 .logo {
     padding: 10px;
     width: 20%;
@@ -142,61 +151,7 @@ a:hover {
   display: block;
 }
 
-@media screen and (max-width: 600px) {
-    .container {
-        margin: 15px;
-    }
-    #login-title {
-        font-size: 18px;
-    }
-    .login-form {
-        width: 85% !important;
-        padding: 25px !important;
-    }
-    .login-form input {
-        width: 100%;
-    }
-    .logo {
-        width: 33%;
-    }
-    .topnav {
-        display: block;
-    }
-    .topnav a:not(:first-child),
-    .dropdown .dropbtn {
-        display: none;
-    }
-    .topnav a.icon {
-        float: right;
-        display: block;
-    }
-    .topnav.responsive {
-        position: relative;
-    }
-    .topnav.responsive .icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-    .topnav.responsive a {
-        float: none;
-        display: block;
-        text-align: left;
-    }
-    .topnav.responsive .dropdown {
-        float: none;
-    }
-    .topnav.responsive .dropdown-content {
-        position: relative;
-    }
-    .topnav.responsive .dropdown .dropbtn {
-        display: block;
-        width: 100%;
-        text-align: left;
-    }
 
-
-}
 /************* Trainer list page ******************/
 .trainer-list {
     border-spacing: 0;
@@ -354,21 +309,23 @@ a:hover {
 /***************** LOGIN PAGE *********************/
 .login-form {
     background-color: #232323;
-    padding: 50px;
+    padding: 0 50px 50px 50px;
     width: 50%;
     margin: 0 auto;
     border-radius: 25px;
     display: flex;
     flex-direction: column;
     text-align: center;
+    height: 35vh;
 }
 
 .login-background {
     background-image: url("https://images.alphacoders.com/998/thumb-1920-998181.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh;
+    height: 60vh;
     padding: 50px;
+    margin: -50px;
 }
 
 .login-submit {
@@ -378,15 +335,26 @@ a:hover {
 }
 
 .login-fields {
+    margin: 15px;
+}
+
+.fields-wrapper{
     margin-bottom: 25px;
 }
 
 #login-title {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 /********************************* PAGE ACCUEIL *******************************/
 
+.users-container{
+    margin-left:-50px;
+    margin-right:-50px;
+    margin-top: -50px;
+    padding: 50px;
+    background-color: #4c4c4c;
+}
 .pokemons-container h2,
 .users-container h2 {
     font-family: "dogica-pixel-bold";
@@ -397,6 +365,7 @@ a:hover {
     display: inline-block;
 }
 
+/***** trainers *****/
 .trainers-list {
     padding: 10px;
     display: flex;
@@ -419,6 +388,7 @@ a:hover {
     color: #232323;
 }
 
+/**************** pokemon list ****************/
 .pokemons-container .pokemons-list{
     display: flex;
     justify-content: space-around;
@@ -478,19 +448,6 @@ a:hover {
 .pokemons-container .btn-admin a{
     margin: auto;
 }
-
-
-@media only screen and (max-width: 600px) {
-    .pokemons-container .pokemons-list .pokemon-box {
-        width: 50%;
-    }
-}
-
-/* @media only screen and (max-width: 1000px) {
-    .users-container .trainers-list {
-        flex-direction: column;
-    }
-} */
 
 /******************************** DETAILS ******************************/
 
@@ -558,32 +515,12 @@ a:hover {
     margin-right: 10px;
 }
 
-@media only screen and (max-width: 1250px) {
-    .details .container {
-        flex-direction: column;
-    }
-
-    .details .container .infos {
-        width: 100%;
-    }
-
-    .details .container .infos .name {
-        font-size: 50px;
-    }
-
-    .details .container .infos .types {
-        width: 50%;
-    }
-}
-
 /******************************** ADD / EDIT POKEMON ********************************/
 
 .pokemon_form {
     display: flex;
     flex-direction: column;
     max-width: 600px;
-    margin: auto;
-    margin-top: 50px;
 }
 
 .pokemon_form input,
@@ -607,6 +544,12 @@ a:hover {
     font-size: 15px;
 }
 
+.poke-gif{
+    float: left;
+    margin-right: 50px;
+    width: 50%;
+}
+
 /******************************** footer ***********************/
 footer {
     color: #fff;
@@ -615,8 +558,98 @@ footer {
     font-size: 12px;
     bottom: 0;
     width: 100%;
+    padding: 15px;
+    margin-top: 120px;
 }
 
-footer div {
-    padding: 15px;
+/***************** MEDIA QUERY ******************/
+
+@media screen and (max-width: 600px) {
+    .users-container{
+        margin-left:-25px;
+        margin-right:-25px;
+        margin-top: -25px;
+        padding: 25px;
+        background-color: #4c4c4c;
+    }
+    .poke-gif{
+        display: none;
+    }
+    .fields-wrapper {
+        margin-bottom: 10px;
+    }
+    h2 {
+        padding-top: 25px;
+    }
+    .pokemons-container .pokemons-list .pokemon-box {
+        width: 50%;
+    }
+    .login-background {
+        margin: -15px;
+    }
+    .container {
+        margin: 25px;
+    }
+    #login-title {
+        font-size: 18px;
+    }
+    .login-form input {
+        width: 100%;
+    }
+    .logo {
+        width: 33%;
+    }
+    .topnav {
+        display: block;
+    }
+    .topnav a:not(:first-child),
+    .dropdown .dropbtn {
+        display: none;
+    }
+    .topnav a.icon {
+        float: right;
+        display: block;
+    }
+    .topnav.responsive {
+        position: relative;
+    }
+    .topnav.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+    .topnav.responsive .dropdown {
+        float: none;
+    }
+    .topnav.responsive .dropdown-content {
+        position: relative;
+    }
+    .topnav.responsive .dropdown .dropbtn {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    .details .container {
+        flex-direction: column;
+    }
+
+    .details .container .infos {
+        width: 100%;
+    }
+
+    .details .container .infos .name {
+        font-size: 50px;
+    }
+
+    .details .container .infos .types {
+        width: 50%;
+    }
 }
