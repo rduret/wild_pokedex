@@ -32,12 +32,16 @@
                         <p class="attack"><span class="type {{attack.type}}">{{attack.type}}</span>{{attack.name}}</p>
                     {% endfor %}
                 </div>
-                    {% if session.userRole == 'trainer' %}{# Display Add or Delete only if the session is set #}
+                    {% if session.userRole == 'trainer' %}
                         {% if pokemon.id in pokemonsId %}
                             <a href="/user/deletePokemon/{{pokemon.id}}"><button class="btn btn-delete">Remove from my team</button></a>
                             {% else %}
                             <a href="/user/addPokemon/{{pokemon.id}}"><button class="btn btn-add">Add to my team</button></a>
                         {% endif %}
+                    {% endif %}
+                    {% if session.userRole == 'admin' %}
+                        <a href="/pokemon/delete/{{pokemon.id}}"><button class="btn btn-delete">Delete</button></a>
+                        <a href="/pokemon/update/{{pokemon.id}}"><button class="btn btn-update">Update</button></a>
                     {% endif %}
             </div>
         </diV>
