@@ -19,6 +19,7 @@
                     <img src="{{pokemon.image}}">
                 {% endif %}
             </div>
+
             <div class="infos">
                 <div class="name">{{pokemon.name}}</div>
                 <div class="types">
@@ -31,6 +32,17 @@
                         <p class="attack"><span class="type {{attack.type}}">{{attack.type}}</span>{{attack.name}}</p>
                     {% endfor %}
                 </div>
+                    {% if session.username is defined %}{# Display Add or Delete only if the session is set #}
+                        {% set location = '/User/addPokemon/'%}
+                        {% set label = 'Add to my team'%}  
+                        {% for pokemonId in pokemonsId %}
+					        {% if pokemon.id == pokemonId %}{# Check if the pokemon is already in the team #}
+                                {% set location = '/User/deletePokemon/'%}
+                                {% set label = 'Delete from my team'%}                       
+                            {% endif %}
+                        {% endfor %}
+                        <a href={{location ~ pokemon.id}}>{{label}}</a>
+                    {% endif %}
             </div>
         </diV>
     </div>
