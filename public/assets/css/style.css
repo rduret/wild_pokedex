@@ -471,7 +471,6 @@ h2 {
 .details .container .figure {
     text-align: center;
     width: 45%;
-    max-width: 50%;
 }
 
 .details .container .figure img {
@@ -565,7 +564,37 @@ footer {
 
 /***************** MEDIA QUERY ******************/
 
+@media only screen and (max-width: 1250px) {
+    .details .container {
+        flex-direction: column;
+    }
+
+    .details .container .infos {
+        width: 100%;
+    }
+
+    .details .container .infos .name {
+        font-size: 50px;
+    }
+
+    .details .container .infos .types {
+        width: 50%;
+    }
+}
+
 @media screen and (max-width: 600px) {
+    .trainers-list .btn {
+        line-height: 20px;
+    }
+    p.attack {
+        font-size: 10px;
+    }
+    .details .container .figure{
+        width: 100%;
+    }
+    .details .container .infos .name{
+        font-size: 25px;
+    }
     .pokemon-list-header{
         display: flex;
         flex-direction: column;
@@ -647,23 +676,5 @@ footer {
         display: block;
         width: 100%;
         text-align: left;
-    }
-}
-
-@media only screen and (max-width: 1250px) {
-    .details .container {
-        flex-direction: column;
-    }
-
-    .details .container .infos {
-        width: 100%;
-    }
-
-    .details .container .infos .name {
-        font-size: 50px;
-    }
-
-    .details .container .infos .types {
-        width: 50%;
     }
 }
