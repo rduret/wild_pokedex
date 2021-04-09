@@ -1,35 +1,44 @@
 <div class="pokemons-container">
-    <h2>Pokemon List</h2> 
-    {% if session.userRole == 'admin' %}
-        <a class="btn btn-add" href="/pokemon/add">Add pokemon</a>
-    {% endif %}
-    
-    <div class="pokemons-list">
-    {% for pokemon in pokemons %}
-    <div class="pokemon-box">
-        <a href="/pokemon/details/{{pokemon.id}}" class="pokemon">
-            <img src="{{ pokemon.image }}"/>
-            <div class="description">
-                <p class="name">{{pokemon.name}}</p>
-                {% for type in pokemon.types %}
-                    <p class="type {{type.name}}">{{type.name}}</p>
-                {% endfor %}
-            </div>
-        </a>
-        {% if session.userRole == 'trainer' %}
-            {% if pokemon.id in pokemonsId %}
-                <a href="user/deletePokemon/{{pokemon.id}}"><button class="btn btn-delete">Remove from my team</button></a>
-            {% else %}
-                <a href="user/addPokemon/{{pokemon.id}}"><button class="btn btn-add">Add to my team</button></a>
-            {% endif %}
-        {% endif %}
-        {% if session.userRole == 'admin' %}
-            <div class="btn-admin">
-                <a href="/pokemon/delete/{{pokemon.id}}"><button class="btn btn-delete">Delete</button></a>
-                <a href="/pokemon/update/{{pokemon.id}}"><button class="btn btn-update">Update</button></a>
-            </div>
-        {% endif %}
-    </div>
-    {% endfor %}
-    </div>
-</div>
+	<div class="pokemon-list-header">
+		<h2>Pokemon List</h2>
+		{% if session.userRole == 'admin' %}
+			<a class="btn btn-add" href="/pokemon/add">Add new pokemon</a>
+		{% endif %}
+		<div>
+			<div class="pokemons-list">
+				{% for pokemon in pokemons %}
+					<div class="pokemon-box">
+						<a href="/pokemon/details/{{pokemon.id}}" class="pokemon">
+							<img src="{{ pokemon.image }}"/>
+							<div class="description">
+								<p class="name">{{pokemon.name}}</p>
+								{% for type in pokemon.types %}
+									<p class="type {{type.name}}">{{type.name}}</p>
+								{% endfor %}
+							</div>
+						</a>
+						{% if session.userRole == 'trainer' %}
+							{% if pokemon.id in pokemonsId %}
+								<a href="user/deletePokemon/{{pokemon.id}}">
+									<button class="btn btn-delete">Remove from my team</button>
+								</a>
+							{% else %}
+								<a href="user/addPokemon/{{pokemon.id}}">
+									<button class="btn btn-add">Add to my team</button>
+								</a>
+							{% endif %}
+						{% endif %}
+						{% if session.userRole == 'admin' %}
+							<div class="btn-admin">
+								<a href="/pokemon/delete/{{pokemon.id}}">
+									<button class="btn btn-delete">Delete</button>
+								</a>
+								<a href="/pokemon/update/{{pokemon.id}}">
+									<button class="btn btn-update">Update</button>
+								</a>
+							</div>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>

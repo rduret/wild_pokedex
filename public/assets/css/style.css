@@ -325,7 +325,7 @@ h2{
     background-size: cover;
     height: 60vh;
     padding: 50px;
-    margin: -50px;
+    margin: -50px -50px -120px -50px;
 }
 
 .login-submit {
@@ -389,6 +389,7 @@ h2{
 }
 
 /**************** pokemon list ****************/
+
 .pokemons-container .pokemons-list{
     display: flex;
     justify-content: space-around;
@@ -565,6 +566,17 @@ footer {
 /***************** MEDIA QUERY ******************/
 
 @media screen and (max-width: 600px) {
+    .pokemon-list-header{
+        display: flex;
+        flex-direction: column;
+    }
+    .pokemon-list-header a{
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    table.trainer-list {
+        font-size: 10px;
+    }
     .users-container{
         margin-left:-25px;
         margin-right:-25px;
@@ -582,10 +594,11 @@ footer {
         padding-top: 25px;
     }
     .pokemons-container .pokemons-list .pokemon-box {
-        width: 50%;
+        width: 100%;
     }
+
     .login-background {
-        margin: -15px;
+        margin: -25px -25px -120px -25px;
     }
     .container {
         margin: 25px;
