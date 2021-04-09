@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	Update your pokemon
+{% endblock %}
+
+{% block content %}
+	<h2>Update your pokemon</h2>
+	<img class="poke-gif" src="https://cdn.statically.io/img/i.pinimg.com/originals/b8/83/fc/b883fc84b57235e6fe57f409716ae68d.gif" alt="pokemon gif"/>
+	<form class="pokemon_form" action="" method="POST" enctype="multipart/form-data">
+		<label for="name">Name</label>
+		<input type="text" name="name" id="name"/>
+
+		<label for="image">Image</label>
+		<input type="file" name="image" id="image">
+
+		<label for="model3d">3D Model</label>
+		<input type="file" name="model3d" id="model3d">
+
+		{% for i in range(1, 2) %}
+			<label for="type{{i}}">Type
+				{{i}}</label>
+			<select name="type{{i}}" id="type{{i}}">
+				<option selected value="">--Choose a type if needed--</option>
+				{% for type in types %}
+					<option value="{{type.id}}">{{type.name}}</option>
+				{% endfor %}
+			</select>
+		{% endfor %}
+
+		{% for i in range(1, 4) %}
+			<label for="attack{{i}}">Attack
+				{{i}}</label>
+			<select name="attack{{i}}" id="attack{{i}}">
+				<option selected value="">--Choose an attack if needed--</option>
+				{% for attack in attacks %}
+					<option value="{{attack.id}}">{{attack.name}}</option>
+				{% endfor %}
+			</select>
+		{% endfor %}
+
+		<div class="buttons">
+			<button class="btn btn-add" type="submit"/>Update</button>
+		<a class="btn btn-cancel" href="/pokemon/details/{{id}}">Cancel</a>
+	</div>
+
+	{% for error in errors %}
+		<p>{{error}}</p>
+	{% endfor %}
+</form>{% endblock %}

@@ -4,3 +4,6 @@
 *.cache
 db.php
 .idea
+.history
+public/assets/images/
+public/assets/models/

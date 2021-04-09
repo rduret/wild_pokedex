@@ -1,0 +1,12 @@
+<div class="users-container">
+    <h2>Some trainers that joined the adventure</h2>
+    <div class="trainers-list">
+    <ul>
+        {% for trainer in trainers %}
+        <li> {{trainer.name}} | </li>
+        {% endfor %}
+        </ul>
+    <a href="/user/list"><button class='btn btn-list-trainers'>Access to the complete trainers's list</button></a>
+
+    </div>
+</div>

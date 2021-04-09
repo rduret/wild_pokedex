@@ -1,0 +1,62 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{pokemon.name}}
+{% endblock %}
+
+{% block content %}
+    <div class="details">
+        <div>
+            <a href="/">Back to home</a>
+        </div>
+        <div class="container">
+            <div class="figure">
+                {% if pokemon.model3d != "" %}
+                    <div id="model3d" style="display:none;">{{pokemon.model3d}}</div>
+                    <canvas id="renderCanvas" touch-action="none"></canvas> <!-- touch-action="none" for best results from PEP -->
+                    <script src="/js/babylonScene.js"></script>  <!-- Here we call our Babylon code -->
+                {% else %}
+                    <img src="{{pokemon.image}}">
+                {% endif %} 
+            </div>
+
+            <div class="infos">
+                <div class="name">{{pokemon.name}}</div>
+                <div class="types">
+                    {% for type in pokemon.types %}
+                        <p class="type {{type.name}}">{{type.name}}</p>
+                    {% endfor %}
+                </div>
+                <div class="attacks">
+                    {% for attack in pokemon.attacks %}
+                        <p class="attack"><span class="type {{attack.type}}">{{attack.type}}</span>{{attack.name}}</p>
+                    {% endfor %}
+                </div>
+                    {% if session.userRole == 'trainer' %}
+                        {% if pokemon.id in pokemonsId %}
+                            <a href="/user/deletePokemon/{{pokemon.id}}"><button class="btn btn-delete">Remove from my team</button></a>
+                            {% else %}
+                            <a href="/user/addPokemon/{{pokemon.id}}"><button class="btn btn-add">Add to my team</button></a>
+                        {% endif %}
+                    {% endif %}
+                    {% if session.userRole == 'admin' %}
+                        <a href="/pokemon/delete/{{pokemon.id}}"><button class="btn btn-delete">Delete</button></a>
+                        <a href="/pokemon/update/{{pokemon.id}}"><button class="btn btn-update">Update</button></a>
+                    {% endif %}
+            </div>
+        </diV>
+    </div>
+{% endblock %}
+
+{#  style 3d    html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            } #}

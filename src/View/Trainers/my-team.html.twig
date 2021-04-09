@@ -1,0 +1,36 @@
+{% if session.username is defined %}
+    <div class="pokemons-container">
+        <h2>My Pokemon Team:</h2>
+        <div class="pokemons-list">
+        {% if pokemonsId is empty %}
+        Your team is currently empty. Let's start to add some pokemons!
+        {% else %}
+            {% for pokemon in pokemons %}
+                {% for pokemonId in pokemonsId %}
+                    {% if pokemon.id == pokemonId %}
+                    <div class="pokemon-box">
+                        <a href="/pokemon/details/{{pokemon.id}}" class="pokemon">
+                            <img src="{{ pokemon.image }}"/>
+                            <div class="description">
+                                <p class="name">{{pokemon.name}}</p>
+                    {% for type in pokemon.types %}
+                                    <p class="type {{type.name}}">{{type.name}}</p>
+                                {% endfor %}
+                            </div>
+                        </a>
+                        {% if session.userRole == 'trainer' %}
+                            {% if pokemon.id in pokemonsId %}
+                                <a href="user/deletePokemon/{{pokemon.id}}"><button class="btn btn-delete">Remove from my team</button></a>
+                            {% else %}
+                                <a href="user/addPokemon/{{pokemon.id}}"><button class="btn btn-add">Add to my team</button></a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+{% endif %}
+

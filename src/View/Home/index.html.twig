@@ -1,5 +1,17 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1>Hello Wilder !</h1>
+	{% if messages != [] %}
+		<div class="messages">
+			{% for message in messages %}
+				<p>{{message}}</p>
+			{% endfor %}
+		<div>
+	{% endif %}
+	{% if session.userRole == 'trainer' %}	
+		{% include "Trainers/my-team.html.twig" %}
+	{% endif %}
+
+	{% include "Trainers/last-trainers.html.twig" %}
+	{% include "Pokemon/list.html.twig" %}
 {% endblock %}

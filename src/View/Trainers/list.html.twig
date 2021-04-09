@@ -1,0 +1,39 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	All Trainers
+{% endblock %}
+
+{% block content %}
+	<a href='/'>Back to home</a>
+	<h2>All trainers</h2>
+	<div style="overflow-x:auto;">
+		<table class="trainer-list">
+			<tr>
+				<th>Trainer name</th>
+				<th>Team</th>
+				{% if session['userRole'] == "admin" %}
+					<th style="width:5%; text-align:center">Action</th>
+				{% endif %}
+			</tr>
+			{% for trainer in trainers %}
+				<tr>
+					<td>
+						{{trainer.name}}</td>
+					<td>
+						{% for pokemon in trainer.pokemons %}
+							{{pokemon}}
+						{% else %}
+							No team
+						{% endfor %}
+					</td>
+					{% if session['userRole'] == "admin" %}
+						<td style="width:5%;text-align:center">
+							<a class="btn btn-delete" title="Delete trainer and team" href="/user/delete/{{trainer.id}}">delete</a>
+						</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+{% endblock %}
