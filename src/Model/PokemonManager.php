@@ -121,6 +121,27 @@ class PokemonManager extends AbstractManager
     }
     
     /**
+     * Update type to pokemon with IDs
+     */
+    public function updatePokemonType(int $pokemonId, int $typeId, int $oldTypeId){
+        $statement = $this->pdo->prepare("UPDATE Pokemon_Type SET `type_id`=:type_id WHERE pokemon_id=:pokemon_id AND type_id=:oldType_id");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->bindValue('oldType_id', $oldTypeId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
+     * Delete type to pokemon with IDs
+     */
+    public function deletePokemonType(int $pokemonId, int $typeId){
+        $statement = $this->pdo->prepare("DELETE FROM Pokemon_Type WHERE pokemon_id=:pokemon_id AND type_id=:type_id");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
      * Add type to pokemon with IDs
      */
     public function addAttackToPokemon($attackId, $pokemonId)
@@ -130,6 +151,29 @@ class PokemonManager extends AbstractManager
         $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
         $statement->execute();
     }
+
+    
+    /**
+     * Update attack to pokemon with IDs
+     */
+    public function updatePokemonAttack(int $pokemonId, int $attackId, int $oldAttackId){
+        $statement = $this->pdo->prepare("UPDATE Pokemon_Attack SET `attack_id`=:attack_id WHERE pokemon_id=:pokemon_id AND attack_id=:oldAttack_id");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
+        $statement->bindValue('oldAttack_id', $oldAttackId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
+    * Delete attack to pokemon with IDs
+    */
+   public function deletePokemonAttack(int $pokemonId, int $attackId){
+       $statement = $this->pdo->prepare("DELETE FROM Pokemon_Attack WHERE pokemon_id=:pokemon_id AND attack_id=:attack_id");
+       $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+       $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
+       $statement->execute();
+   }
+
     /*     Delete Pokemon from list */
     public function deletePokemonFromList(int $id)
     {
@@ -163,43 +207,5 @@ class PokemonManager extends AbstractManager
         $statement->bindValue('model3d', $newPokemon['model3d'], \PDO::PARAM_STR);
         $statement->bindValue('id', $oldPokemon['id'], \PDO::PARAM_INT);
         $statement->execute();
-
-        for ($i = 1; $i <= 2; $i++) {
-            if(array_key_exists('types', $oldPokemon)){
-                if ($newPokemon['type'.$i] !== "" && $i>count($oldPokemon['types'])) {
-                    $this->addTypeToPokemon($newPokemon['type'.$i], $oldPokemon['id']);
-                } elseif ($newPokemon['type'.$i] !== ""){
-                    $statement = $this->pdo->prepare("UPDATE Pokemon_Type SET `type_id` = :type_id
-                    WHERE pokemon_id=:pokemon_id AND type_id=:oldType_id");
-                    $statement->bindValue('pokemon_id', $oldPokemon['id'], \PDO::PARAM_INT);
-                    $statement->bindValue('type_id', $newPokemon['type' . $i], \PDO::PARAM_INT);
-                    $statement->bindValue('oldType_id', $oldPokemon['types'][$i-1]['id'], \PDO::PARAM_INT);
-                    $statement->execute();
-                }
-            }
-            else{
-                $this->addTypeToPokemon($newPokemon['type'.$i], $oldPokemon['id']);
-            }
-        }
-
-        for ($i = 1; $i <= 4; $i++) {
-            if (array_key_exists('attacks', $oldPokemon)) {
-                if ($newPokemon['attack'.$i] !== "" && $i>count($oldPokemon['attacks'])) {
-                    $this->addAttackToPokemon($newPokemon['attack'.$i], $oldPokemon['id']);
-                } elseif ($newPokemon['attack'.$i] !== "") {
-                    $statement = $this->pdo->prepare("UPDATE Pokemon_Attack SET `attack_id` = :attack_id 
-                    WHERE pokemon_id=:pokemon_id AND attack_id=:oldAttack_id");
-                    $statement->bindValue('pokemon_id', $oldPokemon['id'], \PDO::PARAM_INT);
-                    $statement->bindValue('attack_id', $newPokemon['attack' . $i], \PDO::PARAM_INT);
-                    $statement->bindValue('oldAttack_id', $oldPokemon['attacks'][$i-1]['id'], \PDO::PARAM_INT);
-                    $statement->execute();
-                }
-            }
-            else{
-                $this->addAttackToPokemon($newPokemon['attack'.$i], $oldPokemon['id']);
-            }
-        }
-
-        return $oldPokemon['id'];
     }
 }
