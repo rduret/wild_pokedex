@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Model\AttackManager;
 use App\Model\PokemonManager;
+use App\Model\TeamManager;
 use App\Model\TypeManager;
+use App\Model\UserManager;
 use Exception;
 
 class PokemonController extends AbstractController
@@ -12,11 +14,14 @@ class PokemonController extends AbstractController
     private PokemonManager $pokemonManager;
     private TypeManager $typeManager;
     private AttackManager $attackManager;
+    private TeamManager $teamManager;
 
     public function __construct()
     {
         parent::__construct();
         $this->typeManager = new TypeManager();
+        $this->teamManager = new TeamManager();
+        $this->userManager = new UserManager();
         $this->pokemonManager = new PokemonManager();
         $this->attackManager = new AttackManager();
     }
@@ -46,9 +51,47 @@ class PokemonController extends AbstractController
      */
     public function details(int $id): string
     {
+        $pokemonsId = [];
+
         $pokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
-        return $this->twig->render('Pokemon/details.html.twig', ['pokemon' => $pokemon, 'session' => $_SESSION]);
+        if(isset($_SESSION['userId'])){
+            $teamId= intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
+            $teamPokemonsId = $this->teamManager->selectPokemonsInTeam($teamId);
+            foreach($teamPokemonsId as $pokemonId){
+                $pokemonsId[] = $pokemonId['pokemon_id'];
+            }
+        }
+
+        return $this->twig->render('Pokemon/details.html.twig', [
+            'pokemon' => $pokemon, 
+            'session' => $_SESSION,
+            'pokemonsId' => $pokemonsId]
+        );
     }
+
+        /**
+     * Get list of pokemons for a trainer team
+     */
+    public function listPokemonTeamByUser()
+    {
+        //Get the team_id from a user id (returns an array, but we expect only one element)
+        $teamId= intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
+        $errors = [];
+        $pokemonsId = [];
+
+        if ($teamId) {
+            $pokemonsInTeam = $this->teamManager->selectPokemonsInTeam($teamId);
+            foreach ($pokemonsInTeam as $pokemonsArray) {
+                foreach ($pokemonsArray as $pokemon) {
+                    array_push($pokemonsId, $pokemon);
+                }
+            }
+        } else {
+            $errors[] = "The selected team does not exist. Please select a correct value.";
+        }
+        return $pokemonsId;
+    }
+
 
     /**
      * Add a pokemon
