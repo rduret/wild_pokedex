@@ -178,6 +178,7 @@ h2 {
 .trainer-list tr {
     background-color: #4c4c4c;
 }
+
 /********************************* Général *****************************/
 
 .type {
@@ -388,9 +389,29 @@ h2 {
     color: #232323;
 }
 
+/**************** personnal pokemon list of the trainer ************************/
+
+.pokemon-display {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.pokemon-display .pokemons-container .pokemon img {
+    width: 50%;
+}
+.pokemon-display a {
+    max-width: 500px;
+    max-height: 500px;
+}
+
+.pokemon-container .pokemon-list .pokemon-display .pokemon-box {
+    width: 15%;
+}
+
 /**************** pokemon list ****************/
 
-.pokemons-container .pokemons-list{
+.pokemons-container .pokemons-list {
     display: flex;
     justify-content: space-around;
     align-content: space-between;
@@ -566,20 +587,20 @@ footer {
 /***************** MEDIA QUERY ******************/
 
 @media screen and (max-width: 600px) {
-    .pokemon-list-header{
+    .pokemon-list-header {
         display: flex;
         flex-direction: column;
     }
-    .pokemon-list-header a{
+    .pokemon-list-header a {
         text-align: center;
         margin-bottom: 25px;
     }
     table.trainer-list {
         font-size: 10px;
     }
-    .users-container{
-        margin-left:-25px;
-        margin-right:-25px;
+    .users-container {
+        margin-left: -25px;
+        margin-right: -25px;
         margin-top: -25px;
         padding: 25px;
         background-color: #4c4c4c;
