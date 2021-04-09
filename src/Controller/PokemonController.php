@@ -364,7 +364,7 @@ class PokemonController extends AbstractController
                 if (!empty($errors)) {
                     return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'pokemon' => $oldPokemon, 'errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
                 } else {
-                    //$id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
+                    $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
                     header('Location: /pokemon/details/' . $pokemonId);
                 }
             }
