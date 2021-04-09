@@ -48,11 +48,11 @@ a:hover {
     color: rgb(255, 167, 0);
 }
 
-.container{
+.container {
     margin: 50px;
 }
 
-h2{
+h2 {
     padding-top: 50px;
     padding-bottom: 25px;
 }
@@ -148,9 +148,8 @@ h2{
 }
 
 .dropdown:hover .dropdown-content {
-  display: block;
+    display: block;
 }
-
 
 /************* Trainer list page ******************/
 .trainer-list {
@@ -160,11 +159,12 @@ h2{
     margin-top: 25px;
 }
 
-.trainer-list th, .trainer-list td{
-  text-align: left;
-  padding: 8px;
-  width: 45%;
-  border:2px solid #232323;
+.trainer-list th,
+.trainer-list td {
+    text-align: left;
+    padding: 8px;
+    width: 45%;
+    border: 2px solid #232323;
 }
 
 .trainer-list th {
@@ -338,7 +338,7 @@ h2{
     margin: 15px;
 }
 
-.fields-wrapper{
+.fields-wrapper {
     margin-bottom: 25px;
 }
 
@@ -348,9 +348,9 @@ h2{
 
 /********************************* PAGE ACCUEIL *******************************/
 
-.users-container{
-    margin-left:-50px;
-    margin-right:-50px;
+.users-container {
+    margin-left: -50px;
+    margin-right: -50px;
     margin-top: -50px;
     padding: 50px;
     background-color: #4c4c4c;
@@ -361,7 +361,7 @@ h2{
     color: #fff;
 }
 
-.pokemons-container h2{
+.pokemons-container h2 {
     display: inline-block;
 }
 
@@ -397,7 +397,7 @@ h2{
     flex-wrap: wrap;
 }
 
-.pokemons-container .pokemons-list .pokemon-box{
+.pokemons-container .pokemons-list .pokemon-box {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -406,7 +406,7 @@ h2{
     margin-bottom: 65px;
 }
 
-.pokemons-container .pokemons-list .pokemon-box .btn{
+.pokemons-container .pokemons-list .pokemon-box .btn {
     margin-top: 20px;
 }
 
@@ -446,7 +446,7 @@ h2{
     text-align: center;
 }
 
-.pokemons-container .btn-admin a{
+.pokemons-container .btn-admin a {
     margin: auto;
 }
 
@@ -545,7 +545,7 @@ h2{
     font-size: 15px;
 }
 
-.poke-gif{
+.poke-gif {
     float: left;
     margin-right: 50px;
     width: 50%;
@@ -584,7 +584,7 @@ footer {
         padding: 25px;
         background-color: #4c4c4c;
     }
-    .poke-gif{
+    .poke-gif {
         display: none;
     }
     .fields-wrapper {
@@ -610,6 +610,7 @@ footer {
         width: 100%;
     }
     .logo {
+        padding: 15px, 10px, 5px, 10px;
         width: 33%;
     }
     .topnav {
