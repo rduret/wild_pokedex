@@ -69,29 +69,6 @@ class PokemonController extends AbstractController
         );
     }
 
-        /**
-     * Get list of pokemons for a trainer team
-     */
-    public function listPokemonTeamByUser()
-    {
-        //Get the team_id from a user id (returns an array, but we expect only one element)
-        $teamId= intval($this->userManager->selectTeamIdByUserId($_SESSION['userId']));
-        $errors = [];
-        $pokemonsId = [];
-
-        if ($teamId) {
-            $pokemonsInTeam = $this->teamManager->selectPokemonsInTeam($teamId);
-            foreach ($pokemonsInTeam as $pokemonsArray) {
-                foreach ($pokemonsArray as $pokemon) {
-                    array_push($pokemonsId, $pokemon);
-                }
-            }
-        } else {
-            $errors[] = "The selected team does not exist. Please select a correct value.";
-        }
-        return $pokemonsId;
-    }
-
 
     /**
      * Add a pokemon
@@ -238,6 +215,19 @@ class PokemonController extends AbstractController
         // dans la fonction delete on doit rajouter la suppression du fichier
     }
 
+    /**
+     * Check if an attack or type exist in a pokemon with name
+     */
+    private function isValueExist($value, $array)
+    {
+        foreach($array as $item){
+            if($item['id'] == $value){
+                return $item['id'];
+            }
+        }
+        return false;
+    }
+
 
     public function update($id)
     {
@@ -250,6 +240,7 @@ class PokemonController extends AbstractController
         $types = $this->typeManager->selectAll();
         $attacks = $this->attackManager->selectAll();
         $oldPokemon = $this->pokemonManager->selectOneByIdWithAttackTypes($id);
+        $pokemonId = intval($oldPokemon['id']);
 
         // first value of pokemon
         if ($oldPokemon) {
@@ -261,43 +252,51 @@ class PokemonController extends AbstractController
                     $newPokemon['name'] = $oldPokemon['name'];
                 }
 
+                //pour chaque type initialisé avec les anciennes
+                    //si valeur != "" et pas déjà présente dans les anciennes
+                        //si type$i déjà attribué alors update type actuel = nouvelle valeur (type$i = $oldPokemon['types'][$i-1]))
+                        //sinon insert type actuel = nouvelle valeur
                 for ($i = 1; $i <= 2; $i++) {
-                    if ($_POST['type' . $i] == '' && isset($oldPokemon['types'][$i-1])) {
-                        $newPokemon['type'.$i] = $oldPokemon['types'][$i-1]['id'];
-                    } elseif ($_POST['type' . $i] !== '') {
-                        $type_exist = false;
-                        foreach ($types as $type) {
-                            if ($type['id'] === $_POST['type' . $i]) {
-                                $type_exist = true;
+                    $newValue = intval($_POST['type' . $i]);
+
+                    if (isset($oldPokemon['types'])) {
+                        if ($newValue !== 0) {
+                            if (!$this->isValueExist($newValue, $oldPokemon['types'])) {
+                                if (isset($oldPokemon['types'][$i-1]['id'])) {
+                                    $this->pokemonManager->updatePokemonType($pokemonId, $newValue, $oldPokemon['types'][$i-1]['id']);
+                                } else {
+                                    $this->pokemonManager->addTypeToPokemon($newValue, $pokemonId);
+                                }
                             }
+                        } elseif ($newValue == 0 && isset($oldPokemon['types'][$i-1]['id'])) {
+                            $this->pokemonManager->deletePokemonType($pokemonId, $oldPokemon['types'][$i-1]['id']);
                         }
-                        if (!$type_exist) {
-                            $errors[] = "Type $i does not exist. Please select a correct value.";
-                        } else {
-                            $newPokemon['type'.$i] = $_POST['type' . $i];
+                    }  else {
+                        if($newValue !== 0){
+                            $this->pokemonManager->addTypeToPokemon($newValue, $pokemonId);
                         }
-                    } else {
-                        $newPokemon['type'.$i] = "";
                     }
                 }
 
                 for ($i = 1; $i <= 4; $i++) {
-                    if ($_POST['attack' . $i] == '' && isset($oldPokemon['attacks'][$i-1])) {
-                        $newPokemon['attack' . $i] = $oldPokemon['attacks'][$i-1]['id'];
-                    } elseif ($_POST['attack' . $i] !== '') {
-                        $attack_exist = false;
-                        foreach ($attacks as $attack) {
-                            if ($attack['id'] === $_POST['attack' . $i]) {
-                                $attack_exist = true;
+                    $newValue = intval($_POST['attack' . $i]);
+
+                    if (isset($oldPokemon['attacks'])) {
+                        if ($newValue !== 0) {
+                            if (!$this->isValueExist($newValue, $oldPokemon['attacks'])) {
+                                if (isset($oldPokemon['attacks'][$i-1]['id'])) {
+                                    $this->pokemonManager->updatePokemonattack($pokemonId, $newValue, $oldPokemon['attacks'][$i-1]['id']);
+                                } else {
+                                    $this->pokemonManager->addAttackToPokemon($newValue, $pokemonId);
+                                }
                             }
+                        } elseif ($newValue == 0 && isset($oldPokemon['attacks'][$i-1]['id'])) {
+                            $this->pokemonManager->deletePokemonAttack($pokemonId, $oldPokemon['attacks'][$i-1]['id']);
                         }
-                        if (!$attack_exist) {
-                            $errors[] = "Attack $i does not exist. Please select a correct value.";
-                        } else {
-                            $newPokemon['attack' . $i] = $_POST['attack' . $i];
+                    }  else {
+                        if($newValue !== 0){
+                            $this->pokemonManager->addAttackToPokemon($newValue, $pokemonId);
                         }
-                    } else {
-                        $newPokemon['attack'.$i] = "";
                     }
                 }
     
@@ -363,17 +362,19 @@ class PokemonController extends AbstractController
                     $newPokemon['model3d'] = $oldPokemon['model3d'];
                 }
                 if (!empty($errors)) {
-                    return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
+                    return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'pokemon' => $oldPokemon, 'errors' => $errors, 'types' => $types, 'attacks' => $attacks]);
                 } else {
-                    $id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
-                    header('Location: /pokemon/details/' . $id);
+                    //$id = $this->pokemonManager->updatePokemon($newPokemon, $oldPokemon);
+                    header('Location: /pokemon/details/' . $pokemonId);
                 }
             }
-            return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'types' => $types, 'attacks' => $attacks]);
+            return $this->twig->render('Pokemon/update.html.twig', ['id' => $id, 'pokemon' => $oldPokemon, 'types' => $types, 'attacks' => $attacks]);
         } else {
             header('Location: /');
         }
     }
+
+
 
     /**
      * Check if the user is logged in as admin

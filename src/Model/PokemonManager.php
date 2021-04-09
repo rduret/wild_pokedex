@@ -121,6 +121,27 @@ class PokemonManager extends AbstractManager
     }
     
     /**
+     * Update type to pokemon with IDs
+     */
+    public function updatePokemonType(int $pokemonId, int $typeId, int $oldTypeId){
+        $statement = $this->pdo->prepare("UPDATE Pokemon_Type SET `type_id`=:type_id WHERE pokemon_id=:pokemon_id AND type_id=:oldType_id");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->bindValue('oldType_id', $oldTypeId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
+     * Delete type to pokemon with IDs
+     */
+    public function deletePokemonType(int $pokemonId, int $typeId){
+        $statement = $this->pdo->prepare("DELETE FROM Pokemon_Type WHERE pokemon_id=:pokemon_id AND type_id=:type_id");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('type_id', $typeId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
      * Add type to pokemon with IDs
      */
     public function addAttackToPokemon($attackId, $pokemonId)
@@ -130,6 +151,29 @@ class PokemonManager extends AbstractManager
         $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
         $statement->execute();
     }
+
+    
+    /**
+     * Update attack to pokemon with IDs
+     */
+    public function updatePokemonAttack(int $pokemonId, int $attackId, int $oldAttackId){
+        $statement = $this->pdo->prepare("UPDATE Pokemon_Attack SET `attack_id`=:attack_id WHERE pokemon_id=:pokemon_id AND attack_id=:oldAttack_id");
+        $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+        $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
+        $statement->bindValue('oldAttack_id', $oldAttackId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
+    * Delete attack to pokemon with IDs
+    */
+   public function deletePokemonAttack(int $pokemonId, int $attackId){
+       $statement = $this->pdo->prepare("DELETE FROM Pokemon_Attack WHERE pokemon_id=:pokemon_id AND attack_id=:attack_id");
+       $statement->bindValue('pokemon_id', $pokemonId, \PDO::PARAM_INT);
+       $statement->bindValue('attack_id', $attackId, \PDO::PARAM_INT);
+       $statement->execute();
+   }
+
     /*     Delete Pokemon from list */
     public function deletePokemonFromList(int $id)
     {

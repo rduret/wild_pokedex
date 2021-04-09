@@ -6,7 +6,7 @@
     <h2>Update your pokemon</h2>
     <form class="pokemon_form" action="" method="POST" enctype="multipart/form-data">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name"/>
+        <input type="text" name="name" id="name" placeholder="{{pokemon.name}}"/>
 
         <label for="image">Image</label>
         <input type="file" name="image" id="image">
@@ -19,7 +19,7 @@
             <select name="type{{i}}" id="type{{i}}">
             <option selected value="">--Choose a type if needed--</option>
             {% for type in types %}
-                <option value="{{type.id}}">{{type.name}}</option>
+                <option {% if pokemon.types[i-1].id == type.id %} selected {% endif %} value="{{type.id}}">{{type.name}}</option>
             {% endfor %}
         </select>
         {% endfor %}
@@ -29,7 +29,7 @@
             <select name="attack{{i}}" id="attack{{i}}">
             <option selected value="">--Choose an attack if needed--</option>
             {% for attack in attacks %}
-                <option value="{{attack.id}}">{{attack.name}}</option>
+                <option {% if pokemon.attacks[i-1].id == attack.id %} selected {% endif %} value="{{attack.id}}">{{attack.name}}</option>
             {% endfor %}
         </select>
         {% endfor %}
